@@ -1,7 +1,14 @@
-# SSL
-tls/
+.next
+tls
+dist
+node_modules
 
 # General
 .DS_Store
 .AppleDouble
 .LSOverride
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
