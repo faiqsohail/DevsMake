@@ -1,0 +1,7 @@
+# SSL
+tls/
+
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
