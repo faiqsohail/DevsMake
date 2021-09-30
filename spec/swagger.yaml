@@ -66,10 +66,10 @@ paths:
           description: success
           schema:
             properties:
+              identifier:
+                type: "integer"
+                format: "int64"
               username:
-                type: "string"
-                format: "string"
-              email:
                 type: "string"
                 format: "string"
         default:
