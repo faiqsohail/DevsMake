@@ -12,7 +12,7 @@ tags:
 - name: "auth"
   description: "Authentication information"
 - name: "profile"
-  description: "Profle information"
+  description: "Profile information"
 schemes:
 - "https"
 - "http"
