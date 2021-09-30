@@ -9,43 +9,96 @@ info:
 host: "devsmake.com"
 basePath: "/api/v1"
 tags:
-- name: "api"
-  description: "Everything about the api"
+- name: "auth"
+  description: "Authentication information"
+- name: "profile"
+  description: "Profle information"
 schemes:
 - "https"
+- "http"
+security:
+  - github_auth:
+    - user
 paths:
-  /:
+  /auth/login:
     get:
       tags:
-      - "api"
-      summary: "Information pertaining to the api"
-      description: "Information such as current version and status of the system"
-      operationId: "getApiInfo"
-      produces:
-      - "application/json"
+        - "auth"
+      summary: login through github oauth2
+      security: []
       responses:
         "200":
-          description: "successful operation"
+          description: login
           schema:
-            $ref: "#/definitions/ApiResponse"
-      security:
-      - github_auth: []
+            properties:
+              access_token:
+                type: "string"
+                format: "string"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/error"
+  /auth/callback:
+    get:
+      tags:
+        - "auth"
+      summary: return access_token
+      security: []
+      responses:
+        '200':
+          description: login
+          schema:
+            properties:
+              access_token:
+                type: "string"
+                format: "string"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/error"
+  /profile:
+    get:
+      tags:
+        - "profile"
+      summary: profile information and statistics for the current user
+      responses:
+        '200':
+          description: success
+          schema:
+            properties:
+              username:
+                type: "string"
+                format: "string"
+              email:
+                type: "string"
+                format: "string"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/error"
 securityDefinitions:
   github_auth:
     type: "oauth2"
-    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
-    flow: "implicit"
+    flow: "accessCode"
+    authorizationUrl: 'https://github.com/login/oauth/authorize'
+    tokenUrl: 'https://github.com/login/oauth/access_token'
+    scopes:
+      user: User scope
 definitions:
-  ApiResponse:
+  error:
     type: "object"
+    required:
+       - "message"
     properties:
       code:
         type: "integer"
-        format: "int32"
-      type:
-        type: "string"
+        format: "int64"
       message:
         type: "string"
+      fields:
+        type: "string"
+  principal:
+    type: "string"
 externalDocs:
   description: "Find out more about DevsMake"
-  url: "http://devsmake.com"
+  url: "https://devsmake.com"
