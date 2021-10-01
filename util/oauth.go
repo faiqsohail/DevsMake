@@ -24,7 +24,6 @@ var (
 		ClientID:     os.Getenv("CLIENT_ID"),
 		ClientSecret: os.Getenv("CLIENT_SECRET"),
 		Endpoint:     githuboauth.Endpoint,
-		RedirectURL:  os.Getenv("CALLBACK"),
 		Scopes:       []string{"user:email", "repo"},
 	}
 )
