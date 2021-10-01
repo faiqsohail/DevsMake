@@ -12,12 +12,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: issue-ssl-certificate
+    - name: Issue certificate
       uses: Menci/acme@beta-v1
       with:
         version: 3.0.0
         domains: devsmake.com
-        arguments: ''
+        arguments: --standalone
         append-wildcard: true
         output-fullchain: tls/tls.cert
         output-key: tls/tls.key
