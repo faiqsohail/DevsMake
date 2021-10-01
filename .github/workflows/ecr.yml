@@ -20,7 +20,7 @@ jobs:
       with:
         version: 3.0.0
         domains: devsmake.com
-        arguments: --standalone
+        arguments: --standalone --server letsencrypt
         append-wildcard: true
         output-fullchain: tls/tls.cert
         output-key: tls/tls.key
