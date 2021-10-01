@@ -23,7 +23,13 @@ func (handler *AuthCallbackHandler) Handle(params auth.GetAuthCallbackParams) mi
 
 	return middleware.ResponderFunc(
 		func(w http.ResponseWriter, pr runtime.Producer) {
-			sessionCookie := http.Cookie{Name: "sessionCookie", Value: token.AccessToken, Expires: token.Expiry}
+			sessionCookie := http.Cookie{
+				Name:    "sessionCookie",
+				Value:   token.AccessToken,
+				Expires: token.Expiry,
+				Path:    "/",
+				Secure:  true,
+			}
 			http.SetCookie(w, &sessionCookie)
 
 			http.Redirect(w, params.HTTPRequest, "/", http.StatusTemporaryRedirect)
