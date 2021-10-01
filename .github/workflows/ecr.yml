@@ -12,19 +12,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install socat
-      run: sudo apt-get install -y socat
-      
-    - name: Issue certificate
-      uses: Menci/acme@beta-v1
-      with:
-        version: 3.0.0
-        domains: devsmake.com
-        arguments: --standalone --server letsencrypt --dns dns_cf
-        append-wildcard: true
-        output-fullchain: tls/tls.cert
-        output-key: tls/tls.key
-          
     - name: Checkout
       uses: actions/checkout@v2
 
