@@ -28,7 +28,6 @@ RUN go build cmd/devs-make-server/main.go
 FROM alpine:3.13.6 AS runner
 WORKDIR /webapp
 COPY --from=js-builder /app/dist ./dist
-COPY --from=go-builder /go/src/devsmake/tls ./tls
 COPY --from=go-builder /go/src/devsmake/main ./main
 
 EXPOSE 5000 5001
