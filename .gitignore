@@ -2,7 +2,6 @@
 tls
 dist
 node_modules
-prod.env
 
 # General
 .DS_Store
