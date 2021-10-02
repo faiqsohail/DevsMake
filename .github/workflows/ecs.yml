@@ -3,7 +3,8 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-
+env:
+  AWS_LIGHTSAIL_SERVICE_NAME: devsmake-service
 name: webapp to ECS
 
 jobs:
