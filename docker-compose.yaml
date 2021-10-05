@@ -1,0 +1,31 @@
+version: '3'
+services:
+  db:
+    build:
+      context: ./spec
+    environment:
+      MYSQL_ROOT_PASSWORD: devsmake
+      MYSQL_DATABASE: devsmake
+      MYSQL_USER: devsmake
+      MYSQL_PASSWORD: devsmake
+    container_name: devsmake_db
+    ports:
+      - "3306:3306"
+    tty: true
+  app:
+    build: .
+    container_name: devsmake_webapp
+    environment:
+      DB_HOST: db
+      DB_NAME: devsmake
+      DB_USER: devsmake
+      DB_PASSWORD: devsmake
+    restart: on-failure
+    ports:
+      - "5000:443"
+      - "5001:80"
+    tty: true
+    depends_on:
+      - db
+    links: 
+      - db
