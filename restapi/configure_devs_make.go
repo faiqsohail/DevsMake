@@ -11,6 +11,7 @@ import (
 	"github.com/go-openapi/runtime"
 
 	"devsmake/models"
+	"devsmake/persistence"
 	"devsmake/restapi/handlers"
 	"devsmake/restapi/operations"
 	"devsmake/util"
@@ -23,14 +24,18 @@ func configureFlags(api *operations.DevsMakeAPI) {
 }
 
 func configureAPI(api *operations.DevsMakeAPI) http.Handler {
-	// configure the api here
 	api.ServeError = errors.ServeError
-
 	api.UseSwaggerUI()
 
 	api.JSONConsumer = runtime.JSONConsumer()
-
 	api.JSONProducer = runtime.JSONProducer()
+
+	// TODO assign repo var and pass to appropriate handlers
+	_, err := persistence.NewRepository()
+
+	if err != nil {
+		panic(err)
+	}
 
 	api.GithubAuthAuth = func(token string, scopes []string) (*models.Principal, error) {
 		ok, err := util.IsAuthenticated(token)
