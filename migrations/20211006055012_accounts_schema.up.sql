@@ -1,10 +1,4 @@
---
--- Database: `devsmake`
--- 
-
--- --------------------------------------------------------
-
-CREATE TABLE `accounts` (
+CREATE TABLE IF NOT EXISTS `accounts` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`provider` VARCHAR(32) NOT NULL,
 	`provider_id` BIGINT(64) NOT NULL,
