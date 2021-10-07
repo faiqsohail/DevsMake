@@ -30,8 +30,7 @@ func configureAPI(api *operations.DevsMakeAPI) http.Handler {
 	api.JSONConsumer = runtime.JSONConsumer()
 	api.JSONProducer = runtime.JSONProducer()
 
-	// TODO assign repo var and pass to appropriate handlers
-	_, err := persistence.NewRepository()
+	repo, err := persistence.NewRepository()
 
 	if err != nil {
 		panic(err)
@@ -49,6 +48,8 @@ func configureAPI(api *operations.DevsMakeAPI) http.Handler {
 		prin := models.Principal(token)
 		return &prin, nil
 	}
+
+	api.GeneralGetHealthcheckHandler = handlers.NewHealthCheckHandler(repo)
 
 	api.AuthGetAuthCallbackHandler = handlers.NewAuthCallbackHandler()
 	api.AuthGetAuthLoginHandler = handlers.NewAuthLoginHandler()
