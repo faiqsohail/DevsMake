@@ -22,10 +22,10 @@ func (handler *HealthCheckHandler) Handle(params general.GetHealthcheckParams) m
 
 	if err != nil {
 		return general.NewGetHealthcheckInternalServerError().WithPayload(&general.GetHealthcheckInternalServerErrorBody{
-			Status: "unavailable",
+			Status: general.GetHealthcheckInternalServerErrorBodyStatusUnavailable,
 		})
 	}
 	return general.NewGetHealthcheckOK().WithPayload(&general.GetHealthcheckOKBody{
-		Status: "available",
+		Status: general.GetHealthcheckOKBodyStatusAvailable,
 	})
 }
