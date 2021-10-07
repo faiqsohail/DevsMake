@@ -28,6 +28,10 @@ func NewRepository() (*Repositories, error) {
 	}, nil
 }
 
+func (r *Repositories) Ping() error {
+	return r.db.Ping()
+}
+
 func (r *Repositories) Close() error {
 	return r.db.Close()
 }

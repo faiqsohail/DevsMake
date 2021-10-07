@@ -21,6 +21,7 @@ import (
 
 	"devsmake/models"
 	"devsmake/restapi/operations/auth"
+	"devsmake/restapi/operations/general"
 	"devsmake/restapi/operations/profile"
 )
 
@@ -51,6 +52,9 @@ func NewDevsMakeAPI(spec *loads.Document) *DevsMakeAPI {
 		}),
 		AuthGetAuthLoginHandler: auth.GetAuthLoginHandlerFunc(func(params auth.GetAuthLoginParams) middleware.Responder {
 			return middleware.NotImplemented("operation auth.GetAuthLogin has not yet been implemented")
+		}),
+		GeneralGetHealthcheckHandler: general.GetHealthcheckHandlerFunc(func(params general.GetHealthcheckParams) middleware.Responder {
+			return middleware.NotImplemented("operation general.GetHealthcheck has not yet been implemented")
 		}),
 		ProfileGetProfileHandler: profile.GetProfileHandlerFunc(func(params profile.GetProfileParams, principal *models.Principal) middleware.Responder {
 			return middleware.NotImplemented("operation profile.GetProfile has not yet been implemented")
@@ -108,6 +112,8 @@ type DevsMakeAPI struct {
 	AuthGetAuthCallbackHandler auth.GetAuthCallbackHandler
 	// AuthGetAuthLoginHandler sets the operation handler for the get auth login operation
 	AuthGetAuthLoginHandler auth.GetAuthLoginHandler
+	// GeneralGetHealthcheckHandler sets the operation handler for the get healthcheck operation
+	GeneralGetHealthcheckHandler general.GetHealthcheckHandler
 	// ProfileGetProfileHandler sets the operation handler for the get profile operation
 	ProfileGetProfileHandler profile.GetProfileHandler
 
@@ -196,6 +202,9 @@ func (o *DevsMakeAPI) Validate() error {
 	}
 	if o.AuthGetAuthLoginHandler == nil {
 		unregistered = append(unregistered, "auth.GetAuthLoginHandler")
+	}
+	if o.GeneralGetHealthcheckHandler == nil {
+		unregistered = append(unregistered, "general.GetHealthcheckHandler")
 	}
 	if o.ProfileGetProfileHandler == nil {
 		unregistered = append(unregistered, "profile.GetProfileHandler")
@@ -306,6 +315,10 @@ func (o *DevsMakeAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/auth/login"] = auth.NewGetAuthLogin(o.context, o.AuthGetAuthLoginHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/healthcheck"] = general.NewGetHealthcheck(o.context, o.GeneralGetHealthcheckHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
