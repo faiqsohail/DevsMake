@@ -9,6 +9,8 @@ info:
 host: "devsmake.com"
 basePath: "/api/v1"
 tags:
+- name: "general"
+  description: "General system endpoints"
 - name: "auth"
   description: "Authentication information"
 - name: "profile"
@@ -20,6 +22,29 @@ security:
   - github_auth:
     - user
 paths:
+  /healthcheck:
+    get:
+      tags:
+        - "general"
+      summary: system database health check
+      security: []
+      responses:
+        "200":
+          description: database available
+          schema:
+            properties:
+              status:
+                type: "string"
+                format: "string"
+                example: "available"
+        "500":
+          description: database unavailable
+          schema:
+            properties:
+              status:
+                type: "string"
+                format: "string"
+                example: "unavailable"
   /auth/login:
     get:
       tags:

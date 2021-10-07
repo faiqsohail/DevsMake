@@ -91,6 +91,41 @@ func init() {
         }
       }
     },
+    "/healthcheck": {
+      "get": {
+        "security": [],
+        "tags": [
+          "general"
+        ],
+        "summary": "system database health check",
+        "responses": {
+          "200": {
+            "description": "database available",
+            "schema": {
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "format": "string",
+                  "example": "available"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "database unavailable",
+            "schema": {
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "format": "string",
+                  "example": "unavailable"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/profile": {
       "get": {
         "tags": [
@@ -166,11 +201,15 @@ func init() {
   ],
   "tags": [
     {
+      "description": "General system endpoints",
+      "name": "general"
+    },
+    {
       "description": "Authentication information",
       "name": "auth"
     },
     {
-      "description": "Profle information",
+      "description": "Profile information",
       "name": "profile"
     }
   ],
@@ -253,6 +292,41 @@ func init() {
         }
       }
     },
+    "/healthcheck": {
+      "get": {
+        "security": [],
+        "tags": [
+          "general"
+        ],
+        "summary": "system database health check",
+        "responses": {
+          "200": {
+            "description": "database available",
+            "schema": {
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "format": "string",
+                  "example": "available"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "database unavailable",
+            "schema": {
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "format": "string",
+                  "example": "unavailable"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/profile": {
       "get": {
         "tags": [
@@ -328,11 +402,15 @@ func init() {
   ],
   "tags": [
     {
+      "description": "General system endpoints",
+      "name": "general"
+    },
+    {
       "description": "Authentication information",
       "name": "auth"
     },
     {
-      "description": "Profle information",
+      "description": "Profile information",
       "name": "profile"
     }
   ],
