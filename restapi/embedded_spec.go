@@ -106,7 +106,9 @@ func init() {
                 "status": {
                   "type": "string",
                   "format": "string",
-                  "example": "available"
+                  "enum": [
+                    "available"
+                  ]
                 }
               }
             }
@@ -118,7 +120,9 @@ func init() {
                 "status": {
                   "type": "string",
                   "format": "string",
-                  "example": "unavailable"
+                  "enum": [
+                    "unavailable"
+                  ]
                 }
               }
             }
@@ -307,7 +311,9 @@ func init() {
                 "status": {
                   "type": "string",
                   "format": "string",
-                  "example": "available"
+                  "enum": [
+                    "available"
+                  ]
                 }
               }
             }
@@ -319,7 +325,9 @@ func init() {
                 "status": {
                   "type": "string",
                   "format": "string",
-                  "example": "unavailable"
+                  "enum": [
+                    "unavailable"
+                  ]
                 }
               }
             }

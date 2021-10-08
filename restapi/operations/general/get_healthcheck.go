@@ -7,11 +7,14 @@ package general
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 )
 
 // GetHealthcheckHandlerFunc turns a function with the right signature into a get healthcheck handler
@@ -64,12 +67,60 @@ func (o *GetHealthcheck) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 type GetHealthcheckInternalServerErrorBody struct {
 
 	// status
-	// Example: unavailable
+	// Enum: [unavailable]
 	Status string `json:"status,omitempty"`
 }
 
 // Validate validates this get healthcheck internal server error body
 func (o *GetHealthcheckInternalServerErrorBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateStatus(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+var getHealthcheckInternalServerErrorBodyTypeStatusPropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["unavailable"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		getHealthcheckInternalServerErrorBodyTypeStatusPropEnum = append(getHealthcheckInternalServerErrorBodyTypeStatusPropEnum, v)
+	}
+}
+
+const (
+
+	// GetHealthcheckInternalServerErrorBodyStatusUnavailable captures enum value "unavailable"
+	GetHealthcheckInternalServerErrorBodyStatusUnavailable string = "unavailable"
+)
+
+// prop value enum
+func (o *GetHealthcheckInternalServerErrorBody) validateStatusEnum(path, location string, value string) error {
+	if err := validate.EnumCase(path, location, value, getHealthcheckInternalServerErrorBodyTypeStatusPropEnum, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *GetHealthcheckInternalServerErrorBody) validateStatus(formats strfmt.Registry) error {
+	if swag.IsZero(o.Status) { // not required
+		return nil
+	}
+
+	// value enum
+	if err := o.validateStatusEnum("getHealthcheckInternalServerError"+"."+"status", "body", o.Status); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -102,12 +153,60 @@ func (o *GetHealthcheckInternalServerErrorBody) UnmarshalBinary(b []byte) error 
 type GetHealthcheckOKBody struct {
 
 	// status
-	// Example: available
+	// Enum: [available]
 	Status string `json:"status,omitempty"`
 }
 
 // Validate validates this get healthcheck o k body
 func (o *GetHealthcheckOKBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateStatus(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+var getHealthcheckOKBodyTypeStatusPropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["available"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		getHealthcheckOKBodyTypeStatusPropEnum = append(getHealthcheckOKBodyTypeStatusPropEnum, v)
+	}
+}
+
+const (
+
+	// GetHealthcheckOKBodyStatusAvailable captures enum value "available"
+	GetHealthcheckOKBodyStatusAvailable string = "available"
+)
+
+// prop value enum
+func (o *GetHealthcheckOKBody) validateStatusEnum(path, location string, value string) error {
+	if err := validate.EnumCase(path, location, value, getHealthcheckOKBodyTypeStatusPropEnum, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *GetHealthcheckOKBody) validateStatus(formats strfmt.Registry) error {
+	if swag.IsZero(o.Status) { // not required
+		return nil
+	}
+
+	// value enum
+	if err := o.validateStatusEnum("getHealthcheckOK"+"."+"status", "body", o.Status); err != nil {
+		return err
+	}
+
 	return nil
 }
 
