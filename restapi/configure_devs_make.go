@@ -51,7 +51,7 @@ func configureAPI(api *operations.DevsMakeAPI) http.Handler {
 
 	api.GeneralGetHealthcheckHandler = handlers.NewHealthCheckHandler(repo)
 
-	api.AuthGetAuthCallbackHandler = handlers.NewAuthCallbackHandler()
+	api.AuthGetAuthCallbackHandler = handlers.NewAuthCallbackHandler(repo.AccountRepo)
 	api.AuthGetAuthLoginHandler = handlers.NewAuthLoginHandler()
 
 	api.ProfileGetProfileHandler = handlers.NewProfileHandler()

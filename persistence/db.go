@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"database/sql"
+	"devsmake/persistence/interfaces"
 	"os"
 
 	// Import MySQL driver
@@ -9,7 +10,8 @@ import (
 )
 
 type Repositories struct {
-	db *sql.DB
+	AccountRepo interfaces.AccountRepository
+	db          *sql.DB
 }
 
 func NewRepository() (*Repositories, error) {
@@ -24,7 +26,8 @@ func NewRepository() (*Repositories, error) {
 	}
 
 	return &Repositories{
-		db: db,
+		AccountRepo: NewAccountRepository(db),
+		db:          db,
 	}, nil
 }
 

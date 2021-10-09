@@ -17,6 +17,8 @@ services:
     build: .
     container_name: devsmake_webapp
     environment:
+      CLIENT_SECRET: ''
+      CLIENT_ID: ''
       DB_HOST: db
       DB_NAME: devsmake
       DB_USER: devsmake
