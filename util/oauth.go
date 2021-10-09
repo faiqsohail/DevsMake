@@ -24,7 +24,7 @@ var (
 		ClientID:     os.Getenv("CLIENT_ID"),
 		ClientSecret: os.Getenv("CLIENT_SECRET"),
 		Endpoint:     githuboauth.Endpoint,
-		Scopes:       []string{"user:email", "repo"},
+		Scopes:       []string{"user:email", "repo:public_repo"},
 	}
 )
 
