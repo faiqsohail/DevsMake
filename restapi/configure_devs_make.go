@@ -87,7 +87,7 @@ func setupGlobalMiddleware(handler http.Handler) http.Handler {
 		if strings.HasPrefix(r.URL.Path, "/api") {
 			handler.ServeHTTP(w, r)
 		} else {
-			http.FileServer(http.Dir("./dist")).ServeHTTP(w, r)
+			http.FileServer(http.Dir("./frontend/dist")).ServeHTTP(w, r)
 		}
 	})
 }
