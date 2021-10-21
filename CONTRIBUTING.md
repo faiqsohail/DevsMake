@@ -20,10 +20,6 @@ You may write code to improve the project in any way deemed fit, improving the c
 
 Be sure to follow good coding style and be consistent with the current code.
 
-For example:
-* The ProxyChecker project uses spaces (n=4) for indents instead of tabs.
-* Curly braces are on the same line rather than on a new line.
-
 To get started:
 1) Fork the Project
 2) Create a branch for your enhancement
