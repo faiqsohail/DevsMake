@@ -130,116 +130,6 @@ func init() {
         }
       }
     },
-    "/idea": {
-      "post": {
-        "tags": [
-          "idea post"
-        ],
-        "summary": "create an idea post",
-        "parameters": [
-          {
-            "name": "idea",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/Idea"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "the idea post which was created",
-            "schema": {
-              "$ref": "#/definitions/Idea"
-            }
-          },
-          "default": {
-            "description": "error",
-            "schema": {
-              "$ref": "#/definitions/error"
-            }
-          }
-        }
-      }
-    },
-    "/idea/{uuid}": {
-      "get": {
-        "security": [],
-        "tags": [
-          "idea post"
-        ],
-        "summary": "gets an idea by uuid",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "idea post uuid",
-            "name": "uuid",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "the idea post fetched",
-            "schema": {
-              "$ref": "#/definitions/Idea"
-            }
-          },
-          "default": {
-            "description": "error",
-            "schema": {
-              "$ref": "#/definitions/error"
-            }
-          }
-        }
-      }
-    },
-    "/idea/{uuid}/rate": {
-      "put": {
-        "tags": [
-          "idea post"
-        ],
-        "summary": "rate an idea post",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "idea post uuid",
-            "name": "uuid",
-            "in": "path",
-            "required": true
-          },
-          {
-            "name": "rating",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "required": [
-                "rating"
-              ],
-              "properties": {
-                "rating": {
-                  "type": "integer",
-                  "example": 10
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "the idea post which was rated",
-            "schema": {
-              "$ref": "#/definitions/Idea"
-            }
-          },
-          "default": {
-            "description": "error",
-            "schema": {
-              "$ref": "#/definitions/error"
-            }
-          }
-        }
-      }
-    },
     "/ideas": {
       "get": {
         "security": [],
@@ -286,6 +176,305 @@ func init() {
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "idea post"
+        ],
+        "summary": "create an idea post",
+        "parameters": [
+          {
+            "name": "idea",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Idea"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the idea post which was created",
+            "schema": {
+              "$ref": "#/definitions/Idea"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/ideas/{uuid}": {
+      "get": {
+        "security": [],
+        "tags": [
+          "idea post"
+        ],
+        "summary": "gets an idea by uuid",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "idea post uuid",
+            "name": "uuid",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the idea post fetched",
+            "schema": {
+              "$ref": "#/definitions/Idea"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/ideas/{uuid}/comments": {
+      "get": {
+        "security": [],
+        "tags": [
+          "idea comments"
+        ],
+        "summary": "gets all comments for a idea post",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "idea post uuid",
+            "name": "uuid",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the comments for the idea post fetched",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Comment"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "idea comments"
+        ],
+        "summary": "creates a comment for the idea post",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "idea post uuid",
+            "name": "uuid",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "comment",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the comment post which was created",
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/ideas/{uuid}/rate": {
+      "put": {
+        "tags": [
+          "idea post"
+        ],
+        "summary": "rate an idea post",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "idea post uuid",
+            "name": "uuid",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "rating",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "rating"
+              ],
+              "properties": {
+                "rating": {
+                  "type": "string",
+                  "enum": [
+                    "like",
+                    "dislike"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the idea post which was rated",
+            "schema": {
+              "$ref": "#/definitions/Idea"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/ideas/{uuid}/submissions": {
+      "get": {
+        "tags": [
+          "idea submissions"
+        ],
+        "summary": "gets all submissions for a idea post",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "idea post uuid",
+            "name": "uuid",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the submissions for the idea post fetched",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Submission"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "idea submissions"
+        ],
+        "summary": "creates a submission for the idea post",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "idea post uuid",
+            "name": "uuid",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "submision",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Submission"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the submission post which was created",
+            "schema": {
+              "$ref": "#/definitions/Submission"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/ideas/{uuid}/submissions/rate": {
+      "put": {
+        "tags": [
+          "idea submissions"
+        ],
+        "summary": "rate an idea post submission",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "idea post uuid",
+            "name": "uuid",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "rating",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "rating"
+              ],
+              "properties": {
+                "rating": {
+                  "type": "integer",
+                  "example": 10
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the subbmision post which was rated",
+            "schema": {
+              "$ref": "#/definitions/Submission"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
       }
     },
     "/profile": {
@@ -298,16 +487,90 @@ func init() {
           "200": {
             "description": "success",
             "schema": {
-              "properties": {
-                "identifier": {
-                  "type": "integer",
-                  "format": "int64"
-                },
-                "username": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
+              "$ref": "#/definitions/Profile"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/profile/{id}": {
+      "get": {
+        "security": [],
+        "tags": [
+          "profile"
+        ],
+        "summary": "profile information and statistics for the specified user id",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "identifier",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Profile"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/profiles": {
+      "get": {
+        "security": [],
+        "tags": [
+          "profile"
+        ],
+        "summary": "fetches all profiles sorting by criteria",
+        "parameters": [
+          {
+            "enum": [
+              "points",
+              "submissions",
+              "likes"
+            ],
+            "type": "string",
+            "default": "points",
+            "description": "Sort profiles fetched based on a criteria",
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "The maximum number of profiles to fetch",
+            "name": "limit",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "description": "The number of profiles to skip before starting to collect the result set.",
+            "name": "offset",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Profile"
             }
           },
           "default": {
@@ -321,6 +584,28 @@ func init() {
     }
   },
   "definitions": {
+    "Comment": {
+      "type": "object",
+      "required": [
+        "comment"
+      ],
+      "properties": {
+        "author_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "uuid": {
+          "type": "string"
+        }
+      }
+    },
     "Idea": {
       "type": "object",
       "required": [
@@ -328,13 +613,82 @@ func init() {
         "description"
       ],
       "properties": {
+        "author_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
         "description": {
           "type": "string"
         },
-        "rating": {
+        "dislikes": {
+          "type": "integer"
+        },
+        "likes": {
+          "type": "integer"
+        },
+        "submissions": {
           "type": "integer"
         },
         "title": {
+          "type": "string"
+        },
+        "uuid": {
+          "type": "string"
+        }
+      }
+    },
+    "Profile": {
+      "type": "object",
+      "properties": {
+        "avatar_url": {
+          "type": "string"
+        },
+        "identifier": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "points": {
+          "type": "integer"
+        },
+        "total_comments": {
+          "type": "integer"
+        },
+        "total_posts": {
+          "type": "integer"
+        },
+        "total_ratings": {
+          "type": "integer"
+        },
+        "total_submissions": {
+          "type": "integer"
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "Submission": {
+      "type": "object",
+      "required": [
+        "comment"
+      ],
+      "properties": {
+        "author_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "rating": {
           "type": "string"
         },
         "uuid": {
@@ -396,8 +750,16 @@ func init() {
       "name": "profile"
     },
     {
-      "description": "Idea post endpoints",
+      "description": "Idea post",
       "name": "idea post"
+    },
+    {
+      "description": "Idea post comments",
+      "name": "idea comments"
+    },
+    {
+      "description": "Idea post submissions",
+      "name": "idea submissions"
     }
   ],
   "externalDocs": {
@@ -518,116 +880,6 @@ func init() {
         }
       }
     },
-    "/idea": {
-      "post": {
-        "tags": [
-          "idea post"
-        ],
-        "summary": "create an idea post",
-        "parameters": [
-          {
-            "name": "idea",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/Idea"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "the idea post which was created",
-            "schema": {
-              "$ref": "#/definitions/Idea"
-            }
-          },
-          "default": {
-            "description": "error",
-            "schema": {
-              "$ref": "#/definitions/error"
-            }
-          }
-        }
-      }
-    },
-    "/idea/{uuid}": {
-      "get": {
-        "security": [],
-        "tags": [
-          "idea post"
-        ],
-        "summary": "gets an idea by uuid",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "idea post uuid",
-            "name": "uuid",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "the idea post fetched",
-            "schema": {
-              "$ref": "#/definitions/Idea"
-            }
-          },
-          "default": {
-            "description": "error",
-            "schema": {
-              "$ref": "#/definitions/error"
-            }
-          }
-        }
-      }
-    },
-    "/idea/{uuid}/rate": {
-      "put": {
-        "tags": [
-          "idea post"
-        ],
-        "summary": "rate an idea post",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "idea post uuid",
-            "name": "uuid",
-            "in": "path",
-            "required": true
-          },
-          {
-            "name": "rating",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "required": [
-                "rating"
-              ],
-              "properties": {
-                "rating": {
-                  "type": "integer",
-                  "example": 10
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "the idea post which was rated",
-            "schema": {
-              "$ref": "#/definitions/Idea"
-            }
-          },
-          "default": {
-            "description": "error",
-            "schema": {
-              "$ref": "#/definitions/error"
-            }
-          }
-        }
-      }
-    },
     "/ideas": {
       "get": {
         "security": [],
@@ -674,6 +926,305 @@ func init() {
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "idea post"
+        ],
+        "summary": "create an idea post",
+        "parameters": [
+          {
+            "name": "idea",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Idea"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the idea post which was created",
+            "schema": {
+              "$ref": "#/definitions/Idea"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/ideas/{uuid}": {
+      "get": {
+        "security": [],
+        "tags": [
+          "idea post"
+        ],
+        "summary": "gets an idea by uuid",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "idea post uuid",
+            "name": "uuid",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the idea post fetched",
+            "schema": {
+              "$ref": "#/definitions/Idea"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/ideas/{uuid}/comments": {
+      "get": {
+        "security": [],
+        "tags": [
+          "idea comments"
+        ],
+        "summary": "gets all comments for a idea post",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "idea post uuid",
+            "name": "uuid",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the comments for the idea post fetched",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Comment"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "idea comments"
+        ],
+        "summary": "creates a comment for the idea post",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "idea post uuid",
+            "name": "uuid",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "comment",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the comment post which was created",
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/ideas/{uuid}/rate": {
+      "put": {
+        "tags": [
+          "idea post"
+        ],
+        "summary": "rate an idea post",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "idea post uuid",
+            "name": "uuid",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "rating",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "rating"
+              ],
+              "properties": {
+                "rating": {
+                  "type": "string",
+                  "enum": [
+                    "like",
+                    "dislike"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the idea post which was rated",
+            "schema": {
+              "$ref": "#/definitions/Idea"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/ideas/{uuid}/submissions": {
+      "get": {
+        "tags": [
+          "idea submissions"
+        ],
+        "summary": "gets all submissions for a idea post",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "idea post uuid",
+            "name": "uuid",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the submissions for the idea post fetched",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Submission"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "idea submissions"
+        ],
+        "summary": "creates a submission for the idea post",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "idea post uuid",
+            "name": "uuid",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "submision",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Submission"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the submission post which was created",
+            "schema": {
+              "$ref": "#/definitions/Submission"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/ideas/{uuid}/submissions/rate": {
+      "put": {
+        "tags": [
+          "idea submissions"
+        ],
+        "summary": "rate an idea post submission",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "idea post uuid",
+            "name": "uuid",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "rating",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "rating"
+              ],
+              "properties": {
+                "rating": {
+                  "type": "integer",
+                  "example": 10
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the subbmision post which was rated",
+            "schema": {
+              "$ref": "#/definitions/Submission"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
       }
     },
     "/profile": {
@@ -686,16 +1237,90 @@ func init() {
           "200": {
             "description": "success",
             "schema": {
-              "properties": {
-                "identifier": {
-                  "type": "integer",
-                  "format": "int64"
-                },
-                "username": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
+              "$ref": "#/definitions/Profile"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/profile/{id}": {
+      "get": {
+        "security": [],
+        "tags": [
+          "profile"
+        ],
+        "summary": "profile information and statistics for the specified user id",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "identifier",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Profile"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/profiles": {
+      "get": {
+        "security": [],
+        "tags": [
+          "profile"
+        ],
+        "summary": "fetches all profiles sorting by criteria",
+        "parameters": [
+          {
+            "enum": [
+              "points",
+              "submissions",
+              "likes"
+            ],
+            "type": "string",
+            "default": "points",
+            "description": "Sort profiles fetched based on a criteria",
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "The maximum number of profiles to fetch",
+            "name": "limit",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "description": "The number of profiles to skip before starting to collect the result set.",
+            "name": "offset",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Profile"
             }
           },
           "default": {
@@ -709,6 +1334,28 @@ func init() {
     }
   },
   "definitions": {
+    "Comment": {
+      "type": "object",
+      "required": [
+        "comment"
+      ],
+      "properties": {
+        "author_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "uuid": {
+          "type": "string"
+        }
+      }
+    },
     "Idea": {
       "type": "object",
       "required": [
@@ -716,13 +1363,82 @@ func init() {
         "description"
       ],
       "properties": {
+        "author_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
         "description": {
           "type": "string"
         },
-        "rating": {
+        "dislikes": {
+          "type": "integer"
+        },
+        "likes": {
+          "type": "integer"
+        },
+        "submissions": {
           "type": "integer"
         },
         "title": {
+          "type": "string"
+        },
+        "uuid": {
+          "type": "string"
+        }
+      }
+    },
+    "Profile": {
+      "type": "object",
+      "properties": {
+        "avatar_url": {
+          "type": "string"
+        },
+        "identifier": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "points": {
+          "type": "integer"
+        },
+        "total_comments": {
+          "type": "integer"
+        },
+        "total_posts": {
+          "type": "integer"
+        },
+        "total_ratings": {
+          "type": "integer"
+        },
+        "total_submissions": {
+          "type": "integer"
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "Submission": {
+      "type": "object",
+      "required": [
+        "comment"
+      ],
+      "properties": {
+        "author_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "rating": {
           "type": "string"
         },
         "uuid": {
@@ -784,8 +1500,16 @@ func init() {
       "name": "profile"
     },
     {
-      "description": "Idea post endpoints",
+      "description": "Idea post",
       "name": "idea post"
+    },
+    {
+      "description": "Idea post comments",
+      "name": "idea comments"
+    },
+    {
+      "description": "Idea post submissions",
+      "name": "idea submissions"
     }
   ],
   "externalDocs": {

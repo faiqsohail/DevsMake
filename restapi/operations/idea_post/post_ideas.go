@@ -13,40 +13,40 @@ import (
 	"devsmake/models"
 )
 
-// PostIdeaHandlerFunc turns a function with the right signature into a post idea handler
-type PostIdeaHandlerFunc func(PostIdeaParams, *models.Principal) middleware.Responder
+// PostIdeasHandlerFunc turns a function with the right signature into a post ideas handler
+type PostIdeasHandlerFunc func(PostIdeasParams, *models.Principal) middleware.Responder
 
 // Handle executing the request and returning a response
-func (fn PostIdeaHandlerFunc) Handle(params PostIdeaParams, principal *models.Principal) middleware.Responder {
+func (fn PostIdeasHandlerFunc) Handle(params PostIdeasParams, principal *models.Principal) middleware.Responder {
 	return fn(params, principal)
 }
 
-// PostIdeaHandler interface for that can handle valid post idea params
-type PostIdeaHandler interface {
-	Handle(PostIdeaParams, *models.Principal) middleware.Responder
+// PostIdeasHandler interface for that can handle valid post ideas params
+type PostIdeasHandler interface {
+	Handle(PostIdeasParams, *models.Principal) middleware.Responder
 }
 
-// NewPostIdea creates a new http.Handler for the post idea operation
-func NewPostIdea(ctx *middleware.Context, handler PostIdeaHandler) *PostIdea {
-	return &PostIdea{Context: ctx, Handler: handler}
+// NewPostIdeas creates a new http.Handler for the post ideas operation
+func NewPostIdeas(ctx *middleware.Context, handler PostIdeasHandler) *PostIdeas {
+	return &PostIdeas{Context: ctx, Handler: handler}
 }
 
-/* PostIdea swagger:route POST /idea idea post postIdea
+/* PostIdeas swagger:route POST /ideas idea post postIdeas
 
 create an idea post
 
 */
-type PostIdea struct {
+type PostIdeas struct {
 	Context *middleware.Context
-	Handler PostIdeaHandler
+	Handler PostIdeasHandler
 }
 
-func (o *PostIdea) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+func (o *PostIdeas) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	route, rCtx, _ := o.Context.RouteInfo(r)
 	if rCtx != nil {
 		*r = *rCtx
 	}
-	var Params = NewPostIdeaParams()
+	var Params = NewPostIdeasParams()
 	uprinc, aCtx, err := o.Context.Authorize(r, route)
 	if err != nil {
 		o.Context.Respond(rw, r, route.Produces, route, err)

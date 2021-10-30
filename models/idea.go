@@ -19,12 +19,25 @@ import (
 // swagger:model Idea
 type Idea struct {
 
+	// author id
+	AuthorID int64 `json:"author_id,omitempty"`
+
+	// created
+	// Format: date-time
+	Created strfmt.DateTime `json:"created,omitempty"`
+
 	// description
 	// Required: true
 	Description *string `json:"description"`
 
-	// rating
-	Rating int64 `json:"rating,omitempty"`
+	// dislikes
+	Dislikes int64 `json:"dislikes,omitempty"`
+
+	// likes
+	Likes int64 `json:"likes,omitempty"`
+
+	// submissions
+	Submissions int64 `json:"submissions,omitempty"`
 
 	// title
 	// Required: true
@@ -38,6 +51,10 @@ type Idea struct {
 func (m *Idea) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateCreated(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateDescription(formats); err != nil {
 		res = append(res, err)
 	}
@@ -49,6 +66,18 @@ func (m *Idea) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *Idea) validateCreated(formats strfmt.Registry) error {
+	if swag.IsZero(m.Created) { // not required
+		return nil
+	}
+
+	if err := validate.FormatOf("created", "body", "date-time", m.Created.String(), formats); err != nil {
+		return err
+	}
+
 	return nil
 }
 

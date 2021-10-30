@@ -12,8 +12,8 @@ import (
 	"strings"
 )
 
-// GetIdeaUUIDURL generates an URL for the get idea UUID operation
-type GetIdeaUUIDURL struct {
+// PutIdeasUUIDRateURL generates an URL for the put ideas UUID rate operation
+type PutIdeasUUIDRateURL struct {
 	UUID string
 
 	_basePath string
@@ -24,7 +24,7 @@ type GetIdeaUUIDURL struct {
 // WithBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetIdeaUUIDURL) WithBasePath(bp string) *GetIdeaUUIDURL {
+func (o *PutIdeasUUIDRateURL) WithBasePath(bp string) *PutIdeasUUIDRateURL {
 	o.SetBasePath(bp)
 	return o
 }
@@ -32,21 +32,21 @@ func (o *GetIdeaUUIDURL) WithBasePath(bp string) *GetIdeaUUIDURL {
 // SetBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetIdeaUUIDURL) SetBasePath(bp string) {
+func (o *PutIdeasUUIDRateURL) SetBasePath(bp string) {
 	o._basePath = bp
 }
 
 // Build a url path and query string
-func (o *GetIdeaUUIDURL) Build() (*url.URL, error) {
+func (o *PutIdeasUUIDRateURL) Build() (*url.URL, error) {
 	var _result url.URL
 
-	var _path = "/idea/{uuid}"
+	var _path = "/ideas/{uuid}/rate"
 
 	uuid := o.UUID
 	if uuid != "" {
 		_path = strings.Replace(_path, "{uuid}", uuid, -1)
 	} else {
-		return nil, errors.New("uuid is required on GetIdeaUUIDURL")
+		return nil, errors.New("uuid is required on PutIdeasUUIDRateURL")
 	}
 
 	_basePath := o._basePath
@@ -59,7 +59,7 @@ func (o *GetIdeaUUIDURL) Build() (*url.URL, error) {
 }
 
 // Must is a helper function to panic when the url builder returns an error
-func (o *GetIdeaUUIDURL) Must(u *url.URL, err error) *url.URL {
+func (o *PutIdeasUUIDRateURL) Must(u *url.URL, err error) *url.URL {
 	if err != nil {
 		panic(err)
 	}
@@ -70,17 +70,17 @@ func (o *GetIdeaUUIDURL) Must(u *url.URL, err error) *url.URL {
 }
 
 // String returns the string representation of the path with query string
-func (o *GetIdeaUUIDURL) String() string {
+func (o *PutIdeasUUIDRateURL) String() string {
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
-func (o *GetIdeaUUIDURL) BuildFull(scheme, host string) (*url.URL, error) {
+func (o *PutIdeasUUIDRateURL) BuildFull(scheme, host string) (*url.URL, error) {
 	if scheme == "" {
-		return nil, errors.New("scheme is required for a full url on GetIdeaUUIDURL")
+		return nil, errors.New("scheme is required for a full url on PutIdeasUUIDRateURL")
 	}
 	if host == "" {
-		return nil, errors.New("host is required for a full url on GetIdeaUUIDURL")
+		return nil, errors.New("host is required for a full url on PutIdeasUUIDRateURL")
 	}
 
 	base, err := o.Build()
@@ -94,6 +94,6 @@ func (o *GetIdeaUUIDURL) BuildFull(scheme, host string) (*url.URL, error) {
 }
 
 // StringFull returns the string representation of a complete url
-func (o *GetIdeaUUIDURL) StringFull(scheme, host string) string {
+func (o *PutIdeasUUIDRateURL) StringFull(scheme, host string) string {
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

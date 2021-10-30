@@ -25,7 +25,7 @@ type GetProfileOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *GetProfileOKBody `json:"body,omitempty"`
+	Payload *models.Profile `json:"body,omitempty"`
 }
 
 // NewGetProfileOK creates GetProfileOK with default headers values
@@ -35,13 +35,13 @@ func NewGetProfileOK() *GetProfileOK {
 }
 
 // WithPayload adds the payload to the get profile o k response
-func (o *GetProfileOK) WithPayload(payload *GetProfileOKBody) *GetProfileOK {
+func (o *GetProfileOK) WithPayload(payload *models.Profile) *GetProfileOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get profile o k response
-func (o *GetProfileOK) SetPayload(payload *GetProfileOKBody) {
+func (o *GetProfileOK) SetPayload(payload *models.Profile) {
 	o.Payload = payload
 }
 

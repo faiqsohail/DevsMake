@@ -449,8 +449,7 @@ definitions:
   Submission:
     type: "object"
     required:
-       - "title"
-       - "description"
+       - "comment"
     properties:
       author_id:
         type: "integer"

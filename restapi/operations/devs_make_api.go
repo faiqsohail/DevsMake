@@ -22,7 +22,9 @@ import (
 	"devsmake/models"
 	"devsmake/restapi/operations/auth"
 	"devsmake/restapi/operations/general"
+	"devsmake/restapi/operations/idea_comments"
 	"devsmake/restapi/operations/idea_post"
+	"devsmake/restapi/operations/idea_submissions"
 	"devsmake/restapi/operations/profile"
 )
 
@@ -57,20 +59,41 @@ func NewDevsMakeAPI(spec *loads.Document) *DevsMakeAPI {
 		GeneralGetHealthcheckHandler: general.GetHealthcheckHandlerFunc(func(params general.GetHealthcheckParams) middleware.Responder {
 			return middleware.NotImplemented("operation general.GetHealthcheck has not yet been implemented")
 		}),
-		IdeaPostGetIdeaUUIDHandler: idea_post.GetIdeaUUIDHandlerFunc(func(params idea_post.GetIdeaUUIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation idea_post.GetIdeaUUID has not yet been implemented")
-		}),
 		IdeaPostGetIdeasHandler: idea_post.GetIdeasHandlerFunc(func(params idea_post.GetIdeasParams) middleware.Responder {
 			return middleware.NotImplemented("operation idea_post.GetIdeas has not yet been implemented")
+		}),
+		IdeaPostGetIdeasUUIDHandler: idea_post.GetIdeasUUIDHandlerFunc(func(params idea_post.GetIdeasUUIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation idea_post.GetIdeasUUID has not yet been implemented")
+		}),
+		IdeaCommentsGetIdeasUUIDCommentsHandler: idea_comments.GetIdeasUUIDCommentsHandlerFunc(func(params idea_comments.GetIdeasUUIDCommentsParams) middleware.Responder {
+			return middleware.NotImplemented("operation idea_comments.GetIdeasUUIDComments has not yet been implemented")
+		}),
+		IdeaSubmissionsGetIdeasUUIDSubmissionsHandler: idea_submissions.GetIdeasUUIDSubmissionsHandlerFunc(func(params idea_submissions.GetIdeasUUIDSubmissionsParams, principal *models.Principal) middleware.Responder {
+			return middleware.NotImplemented("operation idea_submissions.GetIdeasUUIDSubmissions has not yet been implemented")
 		}),
 		ProfileGetProfileHandler: profile.GetProfileHandlerFunc(func(params profile.GetProfileParams, principal *models.Principal) middleware.Responder {
 			return middleware.NotImplemented("operation profile.GetProfile has not yet been implemented")
 		}),
-		IdeaPostPostIdeaHandler: idea_post.PostIdeaHandlerFunc(func(params idea_post.PostIdeaParams, principal *models.Principal) middleware.Responder {
-			return middleware.NotImplemented("operation idea_post.PostIdea has not yet been implemented")
+		ProfileGetProfileIDHandler: profile.GetProfileIDHandlerFunc(func(params profile.GetProfileIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation profile.GetProfileID has not yet been implemented")
 		}),
-		IdeaPostPutIdeaUUIDRateHandler: idea_post.PutIdeaUUIDRateHandlerFunc(func(params idea_post.PutIdeaUUIDRateParams, principal *models.Principal) middleware.Responder {
-			return middleware.NotImplemented("operation idea_post.PutIdeaUUIDRate has not yet been implemented")
+		ProfileGetProfilesHandler: profile.GetProfilesHandlerFunc(func(params profile.GetProfilesParams) middleware.Responder {
+			return middleware.NotImplemented("operation profile.GetProfiles has not yet been implemented")
+		}),
+		IdeaPostPostIdeasHandler: idea_post.PostIdeasHandlerFunc(func(params idea_post.PostIdeasParams, principal *models.Principal) middleware.Responder {
+			return middleware.NotImplemented("operation idea_post.PostIdeas has not yet been implemented")
+		}),
+		IdeaCommentsPostIdeasUUIDCommentsHandler: idea_comments.PostIdeasUUIDCommentsHandlerFunc(func(params idea_comments.PostIdeasUUIDCommentsParams, principal *models.Principal) middleware.Responder {
+			return middleware.NotImplemented("operation idea_comments.PostIdeasUUIDComments has not yet been implemented")
+		}),
+		IdeaSubmissionsPostIdeasUUIDSubmissionsHandler: idea_submissions.PostIdeasUUIDSubmissionsHandlerFunc(func(params idea_submissions.PostIdeasUUIDSubmissionsParams, principal *models.Principal) middleware.Responder {
+			return middleware.NotImplemented("operation idea_submissions.PostIdeasUUIDSubmissions has not yet been implemented")
+		}),
+		IdeaPostPutIdeasUUIDRateHandler: idea_post.PutIdeasUUIDRateHandlerFunc(func(params idea_post.PutIdeasUUIDRateParams, principal *models.Principal) middleware.Responder {
+			return middleware.NotImplemented("operation idea_post.PutIdeasUUIDRate has not yet been implemented")
+		}),
+		IdeaSubmissionsPutIdeasUUIDSubmissionsRateHandler: idea_submissions.PutIdeasUUIDSubmissionsRateHandlerFunc(func(params idea_submissions.PutIdeasUUIDSubmissionsRateParams, principal *models.Principal) middleware.Responder {
+			return middleware.NotImplemented("operation idea_submissions.PutIdeasUUIDSubmissionsRate has not yet been implemented")
 		}),
 
 		GithubAuthAuth: func(token string, scopes []string) (*models.Principal, error) {
@@ -127,16 +150,30 @@ type DevsMakeAPI struct {
 	AuthGetAuthLoginHandler auth.GetAuthLoginHandler
 	// GeneralGetHealthcheckHandler sets the operation handler for the get healthcheck operation
 	GeneralGetHealthcheckHandler general.GetHealthcheckHandler
-	// IdeaPostGetIdeaUUIDHandler sets the operation handler for the get idea UUID operation
-	IdeaPostGetIdeaUUIDHandler idea_post.GetIdeaUUIDHandler
 	// IdeaPostGetIdeasHandler sets the operation handler for the get ideas operation
 	IdeaPostGetIdeasHandler idea_post.GetIdeasHandler
+	// IdeaPostGetIdeasUUIDHandler sets the operation handler for the get ideas UUID operation
+	IdeaPostGetIdeasUUIDHandler idea_post.GetIdeasUUIDHandler
+	// IdeaCommentsGetIdeasUUIDCommentsHandler sets the operation handler for the get ideas UUID comments operation
+	IdeaCommentsGetIdeasUUIDCommentsHandler idea_comments.GetIdeasUUIDCommentsHandler
+	// IdeaSubmissionsGetIdeasUUIDSubmissionsHandler sets the operation handler for the get ideas UUID submissions operation
+	IdeaSubmissionsGetIdeasUUIDSubmissionsHandler idea_submissions.GetIdeasUUIDSubmissionsHandler
 	// ProfileGetProfileHandler sets the operation handler for the get profile operation
 	ProfileGetProfileHandler profile.GetProfileHandler
-	// IdeaPostPostIdeaHandler sets the operation handler for the post idea operation
-	IdeaPostPostIdeaHandler idea_post.PostIdeaHandler
-	// IdeaPostPutIdeaUUIDRateHandler sets the operation handler for the put idea UUID rate operation
-	IdeaPostPutIdeaUUIDRateHandler idea_post.PutIdeaUUIDRateHandler
+	// ProfileGetProfileIDHandler sets the operation handler for the get profile ID operation
+	ProfileGetProfileIDHandler profile.GetProfileIDHandler
+	// ProfileGetProfilesHandler sets the operation handler for the get profiles operation
+	ProfileGetProfilesHandler profile.GetProfilesHandler
+	// IdeaPostPostIdeasHandler sets the operation handler for the post ideas operation
+	IdeaPostPostIdeasHandler idea_post.PostIdeasHandler
+	// IdeaCommentsPostIdeasUUIDCommentsHandler sets the operation handler for the post ideas UUID comments operation
+	IdeaCommentsPostIdeasUUIDCommentsHandler idea_comments.PostIdeasUUIDCommentsHandler
+	// IdeaSubmissionsPostIdeasUUIDSubmissionsHandler sets the operation handler for the post ideas UUID submissions operation
+	IdeaSubmissionsPostIdeasUUIDSubmissionsHandler idea_submissions.PostIdeasUUIDSubmissionsHandler
+	// IdeaPostPutIdeasUUIDRateHandler sets the operation handler for the put ideas UUID rate operation
+	IdeaPostPutIdeasUUIDRateHandler idea_post.PutIdeasUUIDRateHandler
+	// IdeaSubmissionsPutIdeasUUIDSubmissionsRateHandler sets the operation handler for the put ideas UUID submissions rate operation
+	IdeaSubmissionsPutIdeasUUIDSubmissionsRateHandler idea_submissions.PutIdeasUUIDSubmissionsRateHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -227,20 +264,41 @@ func (o *DevsMakeAPI) Validate() error {
 	if o.GeneralGetHealthcheckHandler == nil {
 		unregistered = append(unregistered, "general.GetHealthcheckHandler")
 	}
-	if o.IdeaPostGetIdeaUUIDHandler == nil {
-		unregistered = append(unregistered, "idea_post.GetIdeaUUIDHandler")
-	}
 	if o.IdeaPostGetIdeasHandler == nil {
 		unregistered = append(unregistered, "idea_post.GetIdeasHandler")
+	}
+	if o.IdeaPostGetIdeasUUIDHandler == nil {
+		unregistered = append(unregistered, "idea_post.GetIdeasUUIDHandler")
+	}
+	if o.IdeaCommentsGetIdeasUUIDCommentsHandler == nil {
+		unregistered = append(unregistered, "idea_comments.GetIdeasUUIDCommentsHandler")
+	}
+	if o.IdeaSubmissionsGetIdeasUUIDSubmissionsHandler == nil {
+		unregistered = append(unregistered, "idea_submissions.GetIdeasUUIDSubmissionsHandler")
 	}
 	if o.ProfileGetProfileHandler == nil {
 		unregistered = append(unregistered, "profile.GetProfileHandler")
 	}
-	if o.IdeaPostPostIdeaHandler == nil {
-		unregistered = append(unregistered, "idea_post.PostIdeaHandler")
+	if o.ProfileGetProfileIDHandler == nil {
+		unregistered = append(unregistered, "profile.GetProfileIDHandler")
 	}
-	if o.IdeaPostPutIdeaUUIDRateHandler == nil {
-		unregistered = append(unregistered, "idea_post.PutIdeaUUIDRateHandler")
+	if o.ProfileGetProfilesHandler == nil {
+		unregistered = append(unregistered, "profile.GetProfilesHandler")
+	}
+	if o.IdeaPostPostIdeasHandler == nil {
+		unregistered = append(unregistered, "idea_post.PostIdeasHandler")
+	}
+	if o.IdeaCommentsPostIdeasUUIDCommentsHandler == nil {
+		unregistered = append(unregistered, "idea_comments.PostIdeasUUIDCommentsHandler")
+	}
+	if o.IdeaSubmissionsPostIdeasUUIDSubmissionsHandler == nil {
+		unregistered = append(unregistered, "idea_submissions.PostIdeasUUIDSubmissionsHandler")
+	}
+	if o.IdeaPostPutIdeasUUIDRateHandler == nil {
+		unregistered = append(unregistered, "idea_post.PutIdeasUUIDRateHandler")
+	}
+	if o.IdeaSubmissionsPutIdeasUUIDSubmissionsRateHandler == nil {
+		unregistered = append(unregistered, "idea_submissions.PutIdeasUUIDSubmissionsRateHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -355,23 +413,51 @@ func (o *DevsMakeAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/idea/{uuid}"] = idea_post.NewGetIdeaUUID(o.context, o.IdeaPostGetIdeaUUIDHandler)
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
 	o.handlers["GET"]["/ideas"] = idea_post.NewGetIdeas(o.context, o.IdeaPostGetIdeasHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
+	o.handlers["GET"]["/ideas/{uuid}"] = idea_post.NewGetIdeasUUID(o.context, o.IdeaPostGetIdeasUUIDHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/ideas/{uuid}/comments"] = idea_comments.NewGetIdeasUUIDComments(o.context, o.IdeaCommentsGetIdeasUUIDCommentsHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/ideas/{uuid}/submissions"] = idea_submissions.NewGetIdeasUUIDSubmissions(o.context, o.IdeaSubmissionsGetIdeasUUIDSubmissionsHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
 	o.handlers["GET"]["/profile"] = profile.NewGetProfile(o.context, o.ProfileGetProfileHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/profile/{id}"] = profile.NewGetProfileID(o.context, o.ProfileGetProfileIDHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/profiles"] = profile.NewGetProfiles(o.context, o.ProfileGetProfilesHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/idea"] = idea_post.NewPostIdea(o.context, o.IdeaPostPostIdeaHandler)
+	o.handlers["POST"]["/ideas"] = idea_post.NewPostIdeas(o.context, o.IdeaPostPostIdeasHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/ideas/{uuid}/comments"] = idea_comments.NewPostIdeasUUIDComments(o.context, o.IdeaCommentsPostIdeasUUIDCommentsHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/ideas/{uuid}/submissions"] = idea_submissions.NewPostIdeasUUIDSubmissions(o.context, o.IdeaSubmissionsPostIdeasUUIDSubmissionsHandler)
 	if o.handlers["PUT"] == nil {
 		o.handlers["PUT"] = make(map[string]http.Handler)
 	}
-	o.handlers["PUT"]["/idea/{uuid}/rate"] = idea_post.NewPutIdeaUUIDRate(o.context, o.IdeaPostPutIdeaUUIDRateHandler)
+	o.handlers["PUT"]["/ideas/{uuid}/rate"] = idea_post.NewPutIdeasUUIDRate(o.context, o.IdeaPostPutIdeasUUIDRateHandler)
+	if o.handlers["PUT"] == nil {
+		o.handlers["PUT"] = make(map[string]http.Handler)
+	}
+	o.handlers["PUT"]["/ideas/{uuid}/submissions/rate"] = idea_submissions.NewPutIdeasUUIDSubmissionsRate(o.context, o.IdeaSubmissionsPutIdeasUUIDSubmissionsRateHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP
