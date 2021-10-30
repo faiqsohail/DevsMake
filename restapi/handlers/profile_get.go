@@ -29,8 +29,10 @@ func (handler *ProfileHandler) Handle(params profile.GetProfileParams, principal
 		return middleware.NotImplemented("Unable to fetch the logged in user")
 	}
 
-	return profile.NewGetProfileOK().WithPayload(&profile.GetProfileOKBody{
-		Identifier: *user.ID,
-		Username:   *user.Login,
-	})
+	return profile.NewGetProfileOK().WithPayload(
+		&models.Profile{
+			Identifier: *user.ID,
+			Username:   *user.Login,
+		},
+	)
 }
