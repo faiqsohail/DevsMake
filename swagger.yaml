@@ -122,6 +122,39 @@ paths:
           description: error
           schema:
             $ref: "#/definitions/error"
+  /profiles:
+    get:
+      tags:
+        - "profile"
+      summary: fetches all profiles sorting by criteria
+      security: []
+      parameters:
+      - name: "sort"
+        in: "query"
+        description: "Sort profiles fetched based on a criteria"
+        required: false
+        type: "string"
+        enum: ["points", "submissions", "likes"]
+        default: "points"
+      - name: "limit"
+        in: "query"
+        description: "The maximum number of profiles to fetch"
+        required: true
+        type: "integer"
+      - name: "offset"
+        in: "query"
+        description: "The number of profiles to skip before starting to collect the result set."
+        required: true
+        type: "integer"
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: "#/definitions/Profile"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/error"
   /ideas:
     get:
       tags:
