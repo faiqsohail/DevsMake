@@ -27,8 +27,8 @@ func init() {
     "description": "Bringing together users and developers to create amazing projects.",
     "title": "DevsMake",
     "license": {
-      "name": "Apache 2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      "name": "GNU Affero General Public License v3.0",
+      "url": "https://www.gnu.org/licenses/agpl-3.0.en.html"
     },
     "version": "1.0.0"
   },
@@ -130,6 +130,164 @@ func init() {
         }
       }
     },
+    "/idea": {
+      "post": {
+        "tags": [
+          "idea post"
+        ],
+        "summary": "create an idea post",
+        "parameters": [
+          {
+            "name": "idea",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Idea"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the idea post which was created",
+            "schema": {
+              "$ref": "#/definitions/Idea"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/idea/{uuid}": {
+      "get": {
+        "security": [],
+        "tags": [
+          "idea post"
+        ],
+        "summary": "gets an idea by uuid",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "idea post uuid",
+            "name": "uuid",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the idea post fetched",
+            "schema": {
+              "$ref": "#/definitions/Idea"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/idea/{uuid}/rate": {
+      "put": {
+        "tags": [
+          "idea post"
+        ],
+        "summary": "rate an idea post",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "idea post uuid",
+            "name": "uuid",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "rating",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "rating"
+              ],
+              "properties": {
+                "rating": {
+                  "type": "integer",
+                  "example": 10
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the idea post which was rated",
+            "schema": {
+              "$ref": "#/definitions/Idea"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/ideas": {
+      "get": {
+        "security": [],
+        "tags": [
+          "idea post"
+        ],
+        "summary": "gets list of all recent ideas posted",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A optional search query",
+            "name": "query",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "The maximum number of posts to fetch",
+            "name": "limit",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "description": "The number of posts to skip before starting to collect the result set.",
+            "name": "offset",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ideas array",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Idea"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
     "/profile": {
       "get": {
         "tags": [
@@ -163,6 +321,27 @@ func init() {
     }
   },
   "definitions": {
+    "Idea": {
+      "type": "object",
+      "required": [
+        "title",
+        "description"
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "rating": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "uuid": {
+          "type": "string"
+        }
+      }
+    },
     "error": {
       "type": "object",
       "required": [
@@ -215,6 +394,10 @@ func init() {
     {
       "description": "Profile information",
       "name": "profile"
+    },
+    {
+      "description": "Idea post endpoints",
+      "name": "idea post"
     }
   ],
   "externalDocs": {
@@ -232,8 +415,8 @@ func init() {
     "description": "Bringing together users and developers to create amazing projects.",
     "title": "DevsMake",
     "license": {
-      "name": "Apache 2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      "name": "GNU Affero General Public License v3.0",
+      "url": "https://www.gnu.org/licenses/agpl-3.0.en.html"
     },
     "version": "1.0.0"
   },
@@ -335,6 +518,164 @@ func init() {
         }
       }
     },
+    "/idea": {
+      "post": {
+        "tags": [
+          "idea post"
+        ],
+        "summary": "create an idea post",
+        "parameters": [
+          {
+            "name": "idea",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Idea"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the idea post which was created",
+            "schema": {
+              "$ref": "#/definitions/Idea"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/idea/{uuid}": {
+      "get": {
+        "security": [],
+        "tags": [
+          "idea post"
+        ],
+        "summary": "gets an idea by uuid",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "idea post uuid",
+            "name": "uuid",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the idea post fetched",
+            "schema": {
+              "$ref": "#/definitions/Idea"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/idea/{uuid}/rate": {
+      "put": {
+        "tags": [
+          "idea post"
+        ],
+        "summary": "rate an idea post",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "idea post uuid",
+            "name": "uuid",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "rating",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "rating"
+              ],
+              "properties": {
+                "rating": {
+                  "type": "integer",
+                  "example": 10
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the idea post which was rated",
+            "schema": {
+              "$ref": "#/definitions/Idea"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/ideas": {
+      "get": {
+        "security": [],
+        "tags": [
+          "idea post"
+        ],
+        "summary": "gets list of all recent ideas posted",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "A optional search query",
+            "name": "query",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "The maximum number of posts to fetch",
+            "name": "limit",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "description": "The number of posts to skip before starting to collect the result set.",
+            "name": "offset",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ideas array",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Idea"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
     "/profile": {
       "get": {
         "tags": [
@@ -368,6 +709,27 @@ func init() {
     }
   },
   "definitions": {
+    "Idea": {
+      "type": "object",
+      "required": [
+        "title",
+        "description"
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "rating": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "uuid": {
+          "type": "string"
+        }
+      }
+    },
     "error": {
       "type": "object",
       "required": [
@@ -420,6 +782,10 @@ func init() {
     {
       "description": "Profile information",
       "name": "profile"
+    },
+    {
+      "description": "Idea post endpoints",
+      "name": "idea post"
     }
   ],
   "externalDocs": {

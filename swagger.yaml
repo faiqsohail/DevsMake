@@ -15,6 +15,8 @@ tags:
   description: "Authentication information"
 - name: "profile"
   description: "Profile information"
+- name: "idea post"
+  description: "Idea post endpoints"
 schemes:
 - "https"
 - "http"
@@ -101,6 +103,109 @@ paths:
           description: error
           schema:
             $ref: "#/definitions/error"
+  /ideas:
+    get:
+      tags:
+        - "idea post"
+      summary: gets list of all recent ideas posted
+      security: []
+      parameters:
+      - name: "query"
+        in: "query"
+        description: "A optional search query"
+        required: false
+        type: "string"
+      - name: "limit"
+        in: "query"
+        description: "The maximum number of posts to fetch"
+        required: true
+        type: "integer"
+      - name: "offset"
+        in: "query"
+        description: "The number of posts to skip before starting to collect the result set."
+        required: true
+        type: "integer"
+      responses:
+        '200':
+          description: "ideas array"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Idea"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/error"
+  /idea:
+    post:
+      tags:
+        - "idea post"
+      summary: create an idea post
+      parameters:
+      - in: "body"
+        name: "idea"
+        schema:
+          $ref: "#/definitions/Idea"
+      responses:
+        '200':
+          description: "the idea post which was created"
+          schema:
+              $ref: "#/definitions/Idea"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/error"
+  /idea/{uuid}:
+    get:
+      tags:
+        - "idea post"
+      summary: gets an idea by uuid
+      security: []
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "idea post uuid"
+        required: true
+        type: "string"
+      responses:
+        '200':
+          description: "the idea post fetched"
+          schema:
+              $ref: "#/definitions/Idea"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/error"
+  /idea/{uuid}/rate:
+    put:
+      tags:
+        - "idea post"
+      summary: rate an idea post
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "idea post uuid"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "rating"
+        schema:
+          type: "object"
+          required:
+            - rating
+          properties:
+            rating:
+              type: "integer"
+              example: 10
+      responses:
+        '200':
+          description: "the idea post which was rated"
+          schema:
+              $ref: "#/definitions/Idea"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/error"
 securityDefinitions:
   github_auth:
     type: "oauth2"
@@ -110,6 +215,20 @@ securityDefinitions:
     scopes:
       user: User scope
 definitions:
+  Idea:
+    type: "object"
+    required:
+       - "title"
+       - "description"
+    properties:
+      uuid:
+        type: "string"
+      title:
+        type: "string"
+      description:
+        type: "string"
+      rating:
+        type: "integer"
   error:
     type: "object"
     required:
