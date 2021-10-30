@@ -16,6 +16,7 @@ FROM node:alpine AS js-builder
 WORKDIR /app
 COPY frontend/. .
 COPY --from=deps /app/node_modules ./node_modules
+ENV NODE_OPTIONS=--openssl-legacy-provider
 RUN npm run build
 
 # Build go image
