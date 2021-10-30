@@ -96,13 +96,28 @@ paths:
         '200':
           description: success
           schema:
-            properties:
-              identifier:
-                type: "integer"
-                format: "int64"
-              username:
-                type: "string"
-                format: "string"
+            $ref: "#/definitions/Profile"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/error"
+  /profile/{id}:
+    get:
+      tags:
+        - "profile"
+      summary: profile information and statistics for the specified user id
+      security: []
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "identifier"
+        required: true
+        type: "string"
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: "#/definitions/Profile"
         default:
           description: error
           schema:
@@ -183,7 +198,7 @@ paths:
     get:
       tags:
         - "idea comments"
-      summary: gets all comments for an idea post
+      summary: gets all comments for a idea post
       security: []
       parameters:
       - name: "uuid"
@@ -229,8 +244,7 @@ paths:
     get:
       tags:
         - "idea submissions"
-      summary: gets all submissions for an idea post
-      security: []
+      summary: gets all submissions for a idea post
       parameters:
       - name: "uuid"
         in: "path"
@@ -340,6 +354,26 @@ securityDefinitions:
     scopes:
       user: User scope
 definitions:
+  Profile:
+    type: "object"
+    properties:
+      identifier:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      avatar_url:
+        type: "string"
+      points:
+        type: "integer"
+      total_posts:
+        type: "integer"
+      total_comments:
+        type: "integer"
+      total_submissions:
+        type: "integer"
+      total_ratings:
+        type: "integer"
   Idea:
     type: "object"
     required:
