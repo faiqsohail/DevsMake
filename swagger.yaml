@@ -136,7 +136,6 @@ paths:
           description: error
           schema:
             $ref: "#/definitions/error"
-  /idea:
     post:
       tags:
         - "idea post"
@@ -155,7 +154,7 @@ paths:
           description: error
           schema:
             $ref: "#/definitions/error"
-  /idea/{uuid}:
+  /ideas/{uuid}:
     get:
       tags:
         - "idea post"
@@ -176,7 +175,54 @@ paths:
           description: error
           schema:
             $ref: "#/definitions/error"
-  /idea/{uuid}/rate:
+  /ideas/{uuid}/comments:
+    get:
+      tags:
+        - "idea post"
+      summary: gets all comments for an idea post
+      security: []
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "idea post uuid"
+        required: true
+        type: "string"
+      responses:
+        '200':
+          description: "the comments for the idea post fetched"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Comment"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/error"
+    post:
+      tags:
+        - "idea post"
+      summary: creates a comment for the idea post
+      security: []
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "idea post uuid"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "comment"
+        schema:
+          $ref: "#/definitions/Comment"
+      responses:
+        '200':
+          description: "the comment post which was created"
+          schema:
+              $ref: "#/definitions/Comment"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/error"
+  /ideas/{uuid}/rate:
     put:
       tags:
         - "idea post"
