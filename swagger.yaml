@@ -195,8 +195,8 @@ paths:
             - rating
           properties:
             rating:
-              type: "integer"
-              example: 10
+              type: "string"
+              enum: ["like", "dislike"]
       responses:
         '200':
           description: "the idea post which was rated"
@@ -227,7 +227,9 @@ definitions:
         type: "string"
       description:
         type: "string"
-      rating:
+      likes:
+        type: "integer"
+      dislikes:
         type: "integer"
   error:
     type: "object"
