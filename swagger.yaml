@@ -221,6 +221,9 @@ definitions:
        - "title"
        - "description"
     properties:
+      author_id:
+        type: "integer"
+        format: "int64"
       uuid:
         type: "string"
       title:
@@ -231,6 +234,24 @@ definitions:
         type: "integer"
       dislikes:
         type: "integer"
+      created:
+        type: "string"
+        format: "date-time"
+  Comment:
+    type: "object"
+    required:
+       - "comment"
+    properties:
+      author_id:
+        type: "integer"
+        format: "int64"
+      uuid:
+        type: "string"
+      comment:
+        type: "string"
+      created:
+        type: "string"
+        format: "date-time"
   error:
     type: "object"
     required:
