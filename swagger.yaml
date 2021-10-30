@@ -16,7 +16,11 @@ tags:
 - name: "profile"
   description: "Profile information"
 - name: "idea post"
-  description: "Idea post endpoints"
+  description: "Idea post"
+- name: "idea comments"
+  description: "Idea post comments"
+- name: "idea submissions"
+  description: "Idea post submissions"
 schemes:
 - "https"
 - "http"
@@ -178,7 +182,7 @@ paths:
   /ideas/{uuid}/comments:
     get:
       tags:
-        - "idea post"
+        - "idea comments"
       summary: gets all comments for an idea post
       security: []
       parameters:
@@ -200,9 +204,8 @@ paths:
             $ref: "#/definitions/error"
     post:
       tags:
-        - "idea post"
+        - "idea comments"
       summary: creates a comment for the idea post
-      security: []
       parameters:
       - name: "uuid"
         in: "path"
@@ -218,6 +221,82 @@ paths:
           description: "the comment post which was created"
           schema:
               $ref: "#/definitions/Comment"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/error"
+  /ideas/{uuid}/submissions:
+    get:
+      tags:
+        - "idea submissions"
+      summary: gets all submissions for an idea post
+      security: []
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "idea post uuid"
+        required: true
+        type: "string"
+      responses:
+        '200':
+          description: "the submissions for the idea post fetched"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Submission"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/error"
+    post:
+      tags:
+        - "idea submissions"
+      summary: creates a submission for the idea post
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "idea post uuid"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "submision"
+        schema:
+          $ref: "#/definitions/Submission"
+      responses:
+        '200':
+          description: "the submission post which was created"
+          schema:
+              $ref: "#/definitions/Submission"
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/error"
+  /ideas/{uuid}/submissions/rate:
+    put:
+      tags:
+        - "idea submissions"
+      summary: rate an idea post submission
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "idea post uuid"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "rating"
+        schema:
+          type: "object"
+          required:
+            - rating
+          properties:
+            rating:
+              type: "integer"
+              example: 10
+      responses:
+        '200':
+          description: "the subbmision post which was rated"
+          schema:
+              $ref: "#/definitions/Submission"
         default:
           description: error
           schema:
@@ -276,6 +355,8 @@ definitions:
         type: "string"
       description:
         type: "string"
+      submissions:
+        type: "integer"
       likes:
         type: "integer"
       dislikes:
@@ -294,6 +375,24 @@ definitions:
       uuid:
         type: "string"
       comment:
+        type: "string"
+      created:
+        type: "string"
+        format: "date-time"
+  Submission:
+    type: "object"
+    required:
+       - "title"
+       - "description"
+    properties:
+      author_id:
+        type: "integer"
+        format: "int64"
+      uuid:
+        type: "string"
+      comment:
+        type: "string"
+      rating:
         type: "string"
       created:
         type: "string"
