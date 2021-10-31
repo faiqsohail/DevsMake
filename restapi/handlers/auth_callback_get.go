@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"devsmake/models"
 	"devsmake/persistence/interfaces"
 	"devsmake/restapi/operations/auth"
 	"devsmake/util"
@@ -43,10 +44,21 @@ func (handler *AuthCallbackHandler) Handle(params auth.GetAuthCallbackParams) mi
 		if strings.Contains(err.Error(), "no rows") {
 			err := handler.db.CreateUser(uint64(*user.ID), *user.Login)
 			if err != nil {
-				return middleware.Error(http.StatusInternalServerError, "Unable to save user information")
+				errMsg := err.Error()
+				return auth.NewGetAuthCallbackDefault(500).WithPayload(
+					&models.Error{
+						Message: &errMsg,
+					},
+				)
 			}
+		} else {
+			errMsg := err.Error()
+			return auth.NewGetAuthCallbackDefault(500).WithPayload(
+				&models.Error{
+					Message: &errMsg,
+				},
+			)
 		}
-		return middleware.Error(http.StatusInternalServerError, "Unable to determine if user exists")
 	}
 
 	return middleware.ResponderFunc(
