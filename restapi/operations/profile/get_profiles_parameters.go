@@ -23,10 +23,16 @@ func NewGetProfilesParams() GetProfilesParams {
 	var (
 		// initialize parameters with default values
 
-		sortDefault = string("points")
+		limitDefault  = int64(100)
+		offsetDefault = int64(0)
+		sortDefault   = string("points")
 	)
 
 	return GetProfilesParams{
+		Limit: limitDefault,
+
+		Offset: offsetDefault,
+
 		Sort: &sortDefault,
 	}
 }
@@ -42,12 +48,16 @@ type GetProfilesParams struct {
 
 	/*The maximum number of profiles to fetch
 	  Required: true
+	  Maximum: 1000
+	  Minimum: 1
 	  In: query
+	  Default: 100
 	*/
 	Limit int64
 	/*The number of profiles to skip before starting to collect the result set.
 	  Required: true
 	  In: query
+	  Default: 0
 	*/
 	Offset int64
 	/*Sort profiles fetched based on a criteria
@@ -110,6 +120,24 @@ func (o *GetProfilesParams) bindLimit(rawData []string, hasKey bool, formats str
 		return errors.InvalidType("limit", "query", "int64", raw)
 	}
 	o.Limit = value
+
+	if err := o.validateLimit(formats); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// validateLimit carries on validations for parameter Limit
+func (o *GetProfilesParams) validateLimit(formats strfmt.Registry) error {
+
+	if err := validate.MinimumInt("limit", "query", o.Limit, 1, false); err != nil {
+		return err
+	}
+
+	if err := validate.MaximumInt("limit", "query", o.Limit, 1000, false); err != nil {
+		return err
+	}
 
 	return nil
 }

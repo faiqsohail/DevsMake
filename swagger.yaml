@@ -141,16 +141,22 @@ paths:
         description: "The maximum number of profiles to fetch"
         required: true
         type: "integer"
+        default: 100
+        minimum: 1
+        maximum: 1000
       - name: "offset"
         in: "query"
         description: "The number of profiles to skip before starting to collect the result set."
         required: true
         type: "integer"
+        default: 0
       responses:
         '200':
           description: success
           schema:
-            $ref: "#/definitions/Profile"
+            type: "array"
+            items:
+              $ref: "#/definitions/Profile"
         default:
           description: error
           schema:
@@ -172,11 +178,15 @@ paths:
         description: "The maximum number of posts to fetch"
         required: true
         type: "integer"
+        default: 100
+        minimum: 1
+        maximum: 1000
       - name: "offset"
         in: "query"
         description: "The number of posts to skip before starting to collect the result set."
         required: true
         type: "integer"
+        default: 0
       responses:
         '200':
           description: "ideas array"

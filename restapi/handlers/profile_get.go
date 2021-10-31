@@ -47,12 +47,5 @@ func (handler *ProfileHandler) Handle(params profile.GetProfileParams, principal
 		)
 	}
 
-	return profile.NewGetProfileOK().WithPayload(
-		&models.Profile{
-			Identifier: int64(storedUser.ID),
-			Username:   storedUser.Username,
-			Points:     int64(storedUser.Points),
-			AvatarURL:  util.GenerateAvatarUrl(storedUser.Username),
-		},
-	)
+	return profile.NewGetProfileOK().WithPayload(storedUser.PublicUser())
 }

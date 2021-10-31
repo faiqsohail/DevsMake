@@ -17,11 +17,21 @@ import (
 )
 
 // NewGetIdeasParams creates a new GetIdeasParams object
-//
-// There are no default values defined in the spec.
+// with the default values initialized.
 func NewGetIdeasParams() GetIdeasParams {
 
-	return GetIdeasParams{}
+	var (
+		// initialize parameters with default values
+
+		limitDefault  = int64(100)
+		offsetDefault = int64(0)
+	)
+
+	return GetIdeasParams{
+		Limit: limitDefault,
+
+		Offset: offsetDefault,
+	}
 }
 
 // GetIdeasParams contains all the bound params for the get ideas operation
@@ -35,12 +45,16 @@ type GetIdeasParams struct {
 
 	/*The maximum number of posts to fetch
 	  Required: true
+	  Maximum: 1000
+	  Minimum: 1
 	  In: query
+	  Default: 100
 	*/
 	Limit int64
 	/*The number of posts to skip before starting to collect the result set.
 	  Required: true
 	  In: query
+	  Default: 0
 	*/
 	Offset int64
 	/*A optional search query
@@ -102,6 +116,24 @@ func (o *GetIdeasParams) bindLimit(rawData []string, hasKey bool, formats strfmt
 		return errors.InvalidType("limit", "query", "int64", raw)
 	}
 	o.Limit = value
+
+	if err := o.validateLimit(formats); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// validateLimit carries on validations for parameter Limit
+func (o *GetIdeasParams) validateLimit(formats strfmt.Registry) error {
+
+	if err := validate.MinimumInt("limit", "query", o.Limit, 1, false); err != nil {
+		return err
+	}
+
+	if err := validate.MaximumInt("limit", "query", o.Limit, 1000, false); err != nil {
+		return err
+	}
 
 	return nil
 }

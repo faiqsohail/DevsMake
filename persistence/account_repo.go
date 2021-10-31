@@ -36,6 +36,32 @@ func (r *AccountRepo) GetUser(providerId uint64) (*models.User, error) {
 	return &user, nil
 }
 
+func (r *AccountRepo) GetUsers(limit uint64, offset uint64, sort string) (models.Users, error) {
+	var users = models.Users{}
+
+	results, err := r.db.
+		Query("SELECT id, provider_id, username, email, points, created FROM accounts ORDER BY ? DESC LIMIT ?, ?", sort, offset, limit)
+	if err != nil {
+		return nil, err
+	}
+
+	for results.Next() {
+		var user models.User
+
+		results.Scan(
+			&user.ID,
+			&user.ProviderID,
+			&user.Username,
+			&user.Email,
+			&user.Points,
+			&user.Created,
+		)
+
+		users = append(users, user)
+	}
+	return users, nil
+}
+
 func (r *AccountRepo) CreateUser(providerId uint64, username string) error {
 	// Default current only supported provider
 	provider := "github"

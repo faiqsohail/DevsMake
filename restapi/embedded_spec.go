@@ -145,7 +145,10 @@ func init() {
             "in": "query"
           },
           {
+            "maximum": 1000,
+            "minimum": 1,
             "type": "integer",
+            "default": 100,
             "description": "The maximum number of posts to fetch",
             "name": "limit",
             "in": "query",
@@ -153,6 +156,7 @@ func init() {
           },
           {
             "type": "integer",
+            "default": 0,
             "description": "The number of posts to skip before starting to collect the result set.",
             "name": "offset",
             "in": "query",
@@ -552,7 +556,10 @@ func init() {
             "in": "query"
           },
           {
+            "maximum": 1000,
+            "minimum": 1,
             "type": "integer",
+            "default": 100,
             "description": "The maximum number of profiles to fetch",
             "name": "limit",
             "in": "query",
@@ -560,6 +567,7 @@ func init() {
           },
           {
             "type": "integer",
+            "default": 0,
             "description": "The number of profiles to skip before starting to collect the result set.",
             "name": "offset",
             "in": "query",
@@ -570,7 +578,10 @@ func init() {
           "200": {
             "description": "success",
             "schema": {
-              "$ref": "#/definitions/Profile"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Profile"
+              }
             }
           },
           "default": {
@@ -895,7 +906,10 @@ func init() {
             "in": "query"
           },
           {
+            "maximum": 1000,
+            "minimum": 1,
             "type": "integer",
+            "default": 100,
             "description": "The maximum number of posts to fetch",
             "name": "limit",
             "in": "query",
@@ -903,6 +917,7 @@ func init() {
           },
           {
             "type": "integer",
+            "default": 0,
             "description": "The number of posts to skip before starting to collect the result set.",
             "name": "offset",
             "in": "query",
@@ -1302,7 +1317,10 @@ func init() {
             "in": "query"
           },
           {
+            "maximum": 1000,
+            "minimum": 1,
             "type": "integer",
+            "default": 100,
             "description": "The maximum number of profiles to fetch",
             "name": "limit",
             "in": "query",
@@ -1310,6 +1328,7 @@ func init() {
           },
           {
             "type": "integer",
+            "default": 0,
             "description": "The number of profiles to skip before starting to collect the result set.",
             "name": "offset",
             "in": "query",
@@ -1320,7 +1339,10 @@ func init() {
           "200": {
             "description": "success",
             "schema": {
-              "$ref": "#/definitions/Profile"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Profile"
+              }
             }
           },
           "default": {

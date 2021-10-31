@@ -4,7 +4,6 @@ import (
 	"devsmake/models"
 	"devsmake/persistence/interfaces"
 	"devsmake/restapi/operations/profile"
-	"devsmake/util"
 
 	"github.com/go-openapi/runtime/middleware"
 )
@@ -29,13 +28,5 @@ func (handler *ProfileIDHandler) Handle(params profile.GetProfileIDParams) middl
 			},
 		)
 	}
-
-	return profile.NewGetProfileOK().WithPayload(
-		&models.Profile{
-			Identifier: int64(storedUser.ID),
-			Username:   storedUser.Username,
-			Points:     int64(storedUser.Points),
-			AvatarURL:  util.GenerateAvatarUrl(storedUser.Username),
-		},
-	)
+	return profile.NewGetProfileOK().WithPayload(storedUser.PublicUser())
 }
