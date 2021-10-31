@@ -112,7 +112,7 @@ paths:
         in: "path"
         description: "identifier"
         required: true
-        type: "string"
+        type: "integer"
       responses:
         '200':
           description: success

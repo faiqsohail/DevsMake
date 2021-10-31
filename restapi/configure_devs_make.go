@@ -54,7 +54,8 @@ func configureAPI(api *operations.DevsMakeAPI) http.Handler {
 	api.AuthGetAuthCallbackHandler = handlers.NewAuthCallbackHandler(repo.AccountRepo)
 	api.AuthGetAuthLoginHandler = handlers.NewAuthLoginHandler()
 
-	api.ProfileGetProfileHandler = handlers.NewProfileHandler()
+	api.ProfileGetProfileHandler = handlers.NewProfileHandler(repo.AccountRepo)
+	api.ProfileGetProfileIDHandler = handlers.NewProfileIDHandler(repo.AccountRepo)
 
 	api.PreServerShutdown = func() {}
 	api.ServerShutdown = func() {}

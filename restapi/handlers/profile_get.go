@@ -3,19 +3,23 @@ package handlers
 import (
 	"context"
 	"devsmake/models"
+	"devsmake/persistence/interfaces"
 	"devsmake/restapi/operations/profile"
 	"devsmake/util"
-	"fmt"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
 )
 
-type ProfileHandler struct{}
+type ProfileHandler struct {
+	db interfaces.AccountRepository
+}
 
-func NewProfileHandler() *ProfileHandler {
-	return &ProfileHandler{}
+func NewProfileHandler(accountRepo interfaces.AccountRepository) *ProfileHandler {
+	return &ProfileHandler{
+		db: accountRepo,
+	}
 }
 
 func (handler *ProfileHandler) Handle(params profile.GetProfileParams, principal *models.Principal) middleware.Responder {
@@ -25,14 +29,30 @@ func (handler *ProfileHandler) Handle(params profile.GetProfileParams, principal
 
 	user, _, err := client.Users.Get(context.TODO(), "")
 	if err != nil {
-		fmt.Printf("client.Users.Get() faled with '%s'\n", err)
-		return middleware.NotImplemented("Unable to fetch the logged in user")
+		errMsg := "Unable to fetch the logged in user"
+		return profile.NewGetProfileDefault(500).WithPayload(
+			&models.Error{
+				Message: &errMsg,
+			},
+		)
+	}
+
+	storedUser, err := handler.db.GetUser(uint64(*user.ID))
+	if err != nil {
+		errMsg := err.Error()
+		return profile.NewGetProfileDefault(500).WithPayload(
+			&models.Error{
+				Message: &errMsg,
+			},
+		)
 	}
 
 	return profile.NewGetProfileOK().WithPayload(
 		&models.Profile{
-			Identifier: *user.ID,
-			Username:   *user.Login,
+			Identifier: int64(storedUser.ID),
+			Username:   storedUser.Username,
+			Points:     int64(storedUser.Points),
+			AvatarURL:  util.GenerateAvatarUrl(storedUser.Username),
 		},
 	)
 }

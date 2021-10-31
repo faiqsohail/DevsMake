@@ -508,7 +508,7 @@ func init() {
         "summary": "profile information and statistics for the specified user id",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
             "description": "identifier",
             "name": "id",
             "in": "path",
@@ -1258,7 +1258,7 @@ func init() {
         "summary": "profile information and statistics for the specified user id",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
             "description": "identifier",
             "name": "id",
             "in": "path",
