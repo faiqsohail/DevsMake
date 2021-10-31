@@ -19,7 +19,7 @@ func NewProfileIDHandler(accountRepo interfaces.AccountRepository) *ProfileIDHan
 }
 
 func (handler *ProfileIDHandler) Handle(params profile.GetProfileIDParams) middleware.Responder {
-	storedUser, err := handler.db.GetUser(uint64(params.ID))
+	storedUser, err := handler.db.GetUser(uint64(params.ID), false)
 	if err != nil {
 		msg := err.Error()
 		return profile.NewGetProfileIDDefault(500).WithPayload(

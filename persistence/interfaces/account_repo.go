@@ -5,7 +5,7 @@ import (
 )
 
 type AccountRepository interface {
-	GetUser(uint64) (*models.User, error)
+	GetUser(uint64, bool) (*models.User, error)
 	GetUsers(uint64, uint64, string) (models.Users, error)
 	CreateUser(uint64, string) error
 }

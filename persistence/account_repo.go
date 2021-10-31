@@ -16,18 +16,26 @@ func NewAccountRepository(db *sql.DB) *AccountRepo {
 
 var _ interfaces.AccountRepository = &AccountRepo{}
 
-func (r *AccountRepo) GetUser(providerId uint64) (*models.User, error) {
+func (r *AccountRepo) GetUser(id uint64, providerId bool) (*models.User, error) {
 	var user models.User
-	err := r.db.
-		QueryRow("SELECT id, provider_id, username, email, points, created FROM accounts where provider_id = ?", providerId).
-		Scan(
-			&user.ID,
-			&user.ProviderID,
-			&user.Username,
-			&user.Email,
-			&user.Points,
-			&user.Created,
-		)
+
+	var row *sql.Row
+	if providerId {
+		row = r.db.
+			QueryRow("SELECT id, provider_id, username, email, points, created FROM accounts where provider_id = ?", id)
+	} else {
+		row = r.db.
+			QueryRow("SELECT id, provider_id, username, email, points, created FROM accounts where id = ?", id)
+	}
+
+	err := row.Scan(
+		&user.ID,
+		&user.ProviderID,
+		&user.Username,
+		&user.Email,
+		&user.Points,
+		&user.Created,
+	)
 
 	if err != nil {
 		return nil, err

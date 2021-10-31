@@ -15,8 +15,8 @@ import (
 
 // GetIdeasURL generates an URL for the get ideas operation
 type GetIdeasURL struct {
-	Limit  int64
-	Offset int64
+	Limit  *int64
+	Offset *int64
 	Query  *string
 
 	_basePath string
@@ -53,12 +53,18 @@ func (o *GetIdeasURL) Build() (*url.URL, error) {
 
 	qs := make(url.Values)
 
-	limitQ := swag.FormatInt64(o.Limit)
+	var limitQ string
+	if o.Limit != nil {
+		limitQ = swag.FormatInt64(*o.Limit)
+	}
 	if limitQ != "" {
 		qs.Set("limit", limitQ)
 	}
 
-	offsetQ := swag.FormatInt64(o.Offset)
+	var offsetQ string
+	if o.Offset != nil {
+		offsetQ = swag.FormatInt64(*o.Offset)
+	}
 	if offsetQ != "" {
 		qs.Set("offset", offsetQ)
 	}

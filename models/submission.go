@@ -31,7 +31,8 @@ type Submission struct {
 	Created strfmt.DateTime `json:"created,omitempty"`
 
 	// rating
-	Rating string `json:"rating,omitempty"`
+	// Maximum: 10
+	Rating int64 `json:"rating"`
 
 	// uuid
 	UUID string `json:"uuid,omitempty"`
@@ -46,6 +47,10 @@ func (m *Submission) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateCreated(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateRating(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -70,6 +75,18 @@ func (m *Submission) validateCreated(formats strfmt.Registry) error {
 	}
 
 	if err := validate.FormatOf("created", "body", "date-time", m.Created.String(), formats); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *Submission) validateRating(formats strfmt.Registry) error {
+	if swag.IsZero(m.Rating) { // not required
+		return nil
+	}
+
+	if err := validate.MaximumInt("rating", "body", m.Rating, 10, false); err != nil {
 		return err
 	}
 

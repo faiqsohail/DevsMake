@@ -31,13 +31,13 @@ type Idea struct {
 	Description *string `json:"description"`
 
 	// dislikes
-	Dislikes int64 `json:"dislikes,omitempty"`
+	Dislikes int64 `json:"dislikes"`
 
 	// likes
-	Likes int64 `json:"likes,omitempty"`
+	Likes int64 `json:"likes"`
 
 	// submissions
-	Submissions int64 `json:"submissions,omitempty"`
+	Submissions int64 `json:"submissions"`
 
 	// title
 	// Required: true

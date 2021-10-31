@@ -38,7 +38,7 @@ func (handler *AuthCallbackHandler) Handle(params auth.GetAuthCallbackParams) mi
 	}
 
 	// Create the user account if it doesn't exist
-	_, err = handler.db.GetUser(uint64(*user.ID))
+	_, err = handler.db.GetUser(uint64(*user.ID), true)
 	if err != nil {
 		if strings.Contains(err.Error(), "no rows") {
 			err := handler.db.CreateUser(uint64(*user.ID), *user.Login)

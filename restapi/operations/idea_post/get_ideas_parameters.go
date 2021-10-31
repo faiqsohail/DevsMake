@@ -28,9 +28,9 @@ func NewGetIdeasParams() GetIdeasParams {
 	)
 
 	return GetIdeasParams{
-		Limit: limitDefault,
+		Limit: &limitDefault,
 
-		Offset: offsetDefault,
+		Offset: &offsetDefault,
 	}
 }
 
@@ -44,19 +44,17 @@ type GetIdeasParams struct {
 	HTTPRequest *http.Request `json:"-"`
 
 	/*The maximum number of posts to fetch
-	  Required: true
 	  Maximum: 1000
 	  Minimum: 1
 	  In: query
 	  Default: 100
 	*/
-	Limit int64
+	Limit *int64
 	/*The number of posts to skip before starting to collect the result set.
-	  Required: true
 	  In: query
 	  Default: 0
 	*/
-	Offset int64
+	Offset *int64
 	/*A optional search query
 	  In: query
 	*/
@@ -96,26 +94,24 @@ func (o *GetIdeasParams) BindRequest(r *http.Request, route *middleware.MatchedR
 
 // bindLimit binds and validates parameter Limit from query.
 func (o *GetIdeasParams) bindLimit(rawData []string, hasKey bool, formats strfmt.Registry) error {
-	if !hasKey {
-		return errors.Required("limit", "query", rawData)
-	}
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
 	}
 
-	// Required: true
+	// Required: false
 	// AllowEmptyValue: false
 
-	if err := validate.RequiredString("limit", "query", raw); err != nil {
-		return err
+	if raw == "" { // empty values pass all other validations
+		// Default values have been previously initialized by NewGetIdeasParams()
+		return nil
 	}
 
 	value, err := swag.ConvertInt64(raw)
 	if err != nil {
 		return errors.InvalidType("limit", "query", "int64", raw)
 	}
-	o.Limit = value
+	o.Limit = &value
 
 	if err := o.validateLimit(formats); err != nil {
 		return err
@@ -127,11 +123,11 @@ func (o *GetIdeasParams) bindLimit(rawData []string, hasKey bool, formats strfmt
 // validateLimit carries on validations for parameter Limit
 func (o *GetIdeasParams) validateLimit(formats strfmt.Registry) error {
 
-	if err := validate.MinimumInt("limit", "query", o.Limit, 1, false); err != nil {
+	if err := validate.MinimumInt("limit", "query", *o.Limit, 1, false); err != nil {
 		return err
 	}
 
-	if err := validate.MaximumInt("limit", "query", o.Limit, 1000, false); err != nil {
+	if err := validate.MaximumInt("limit", "query", *o.Limit, 1000, false); err != nil {
 		return err
 	}
 
@@ -140,26 +136,24 @@ func (o *GetIdeasParams) validateLimit(formats strfmt.Registry) error {
 
 // bindOffset binds and validates parameter Offset from query.
 func (o *GetIdeasParams) bindOffset(rawData []string, hasKey bool, formats strfmt.Registry) error {
-	if !hasKey {
-		return errors.Required("offset", "query", rawData)
-	}
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
 	}
 
-	// Required: true
+	// Required: false
 	// AllowEmptyValue: false
 
-	if err := validate.RequiredString("offset", "query", raw); err != nil {
-		return err
+	if raw == "" { // empty values pass all other validations
+		// Default values have been previously initialized by NewGetIdeasParams()
+		return nil
 	}
 
 	value, err := swag.ConvertInt64(raw)
 	if err != nil {
 		return errors.InvalidType("offset", "query", "int64", raw)
 	}
-	o.Offset = value
+	o.Offset = &value
 
 	return nil
 }

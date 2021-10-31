@@ -37,7 +37,7 @@ func (handler *ProfileHandler) Handle(params profile.GetProfileParams, principal
 		)
 	}
 
-	storedUser, err := handler.db.GetUser(uint64(*user.ID))
+	storedUser, err := handler.db.GetUser(uint64(*user.ID), true)
 	if err != nil {
 		errMsg := err.Error()
 		return profile.NewGetProfileDefault(500).WithPayload(

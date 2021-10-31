@@ -151,16 +151,14 @@ func init() {
             "default": 100,
             "description": "The maximum number of posts to fetch",
             "name": "limit",
-            "in": "query",
-            "required": true
+            "in": "query"
           },
           {
             "type": "integer",
             "default": 0,
             "description": "The number of posts to skip before starting to collect the result set.",
             "name": "offset",
-            "in": "query",
-            "required": true
+            "in": "query"
           }
         ],
         "responses": {
@@ -459,6 +457,8 @@ func init() {
               "properties": {
                 "rating": {
                   "type": "integer",
+                  "maximum": 10,
+                  "minimum": 1,
                   "example": 10
                 }
               }
@@ -562,16 +562,14 @@ func init() {
             "default": 100,
             "description": "The maximum number of profiles to fetch",
             "name": "limit",
-            "in": "query",
-            "required": true
+            "in": "query"
           },
           {
             "type": "integer",
             "default": 0,
             "description": "The number of profiles to skip before starting to collect the result set.",
             "name": "offset",
-            "in": "query",
-            "required": true
+            "in": "query"
           }
         ],
         "responses": {
@@ -636,13 +634,16 @@ func init() {
           "type": "string"
         },
         "dislikes": {
-          "type": "integer"
+          "type": "integer",
+          "x-omitempty": false
         },
         "likes": {
-          "type": "integer"
+          "type": "integer",
+          "x-omitempty": false
         },
         "submissions": {
-          "type": "integer"
+          "type": "integer",
+          "x-omitempty": false
         },
         "title": {
           "type": "string"
@@ -663,19 +664,24 @@ func init() {
           "format": "int64"
         },
         "points": {
-          "type": "integer"
+          "type": "integer",
+          "x-omitempty": false
         },
         "total_comments": {
-          "type": "integer"
+          "type": "integer",
+          "x-omitempty": false
         },
         "total_posts": {
-          "type": "integer"
+          "type": "integer",
+          "x-omitempty": false
         },
         "total_ratings": {
-          "type": "integer"
+          "type": "integer",
+          "x-omitempty": false
         },
         "total_submissions": {
-          "type": "integer"
+          "type": "integer",
+          "x-omitempty": false
         },
         "username": {
           "type": "string"
@@ -700,7 +706,9 @@ func init() {
           "format": "date-time"
         },
         "rating": {
-          "type": "string"
+          "type": "integer",
+          "maximum": 10,
+          "x-omitempty": false
         },
         "uuid": {
           "type": "string"
@@ -912,16 +920,14 @@ func init() {
             "default": 100,
             "description": "The maximum number of posts to fetch",
             "name": "limit",
-            "in": "query",
-            "required": true
+            "in": "query"
           },
           {
             "type": "integer",
             "default": 0,
             "description": "The number of posts to skip before starting to collect the result set.",
             "name": "offset",
-            "in": "query",
-            "required": true
+            "in": "query"
           }
         ],
         "responses": {
@@ -1220,6 +1226,8 @@ func init() {
               "properties": {
                 "rating": {
                   "type": "integer",
+                  "maximum": 10,
+                  "minimum": 1,
                   "example": 10
                 }
               }
@@ -1323,16 +1331,14 @@ func init() {
             "default": 100,
             "description": "The maximum number of profiles to fetch",
             "name": "limit",
-            "in": "query",
-            "required": true
+            "in": "query"
           },
           {
             "type": "integer",
             "default": 0,
             "description": "The number of profiles to skip before starting to collect the result set.",
             "name": "offset",
-            "in": "query",
-            "required": true
+            "in": "query"
           }
         ],
         "responses": {
@@ -1397,13 +1403,16 @@ func init() {
           "type": "string"
         },
         "dislikes": {
-          "type": "integer"
+          "type": "integer",
+          "x-omitempty": false
         },
         "likes": {
-          "type": "integer"
+          "type": "integer",
+          "x-omitempty": false
         },
         "submissions": {
-          "type": "integer"
+          "type": "integer",
+          "x-omitempty": false
         },
         "title": {
           "type": "string"
@@ -1424,19 +1433,24 @@ func init() {
           "format": "int64"
         },
         "points": {
-          "type": "integer"
+          "type": "integer",
+          "x-omitempty": false
         },
         "total_comments": {
-          "type": "integer"
+          "type": "integer",
+          "x-omitempty": false
         },
         "total_posts": {
-          "type": "integer"
+          "type": "integer",
+          "x-omitempty": false
         },
         "total_ratings": {
-          "type": "integer"
+          "type": "integer",
+          "x-omitempty": false
         },
         "total_submissions": {
-          "type": "integer"
+          "type": "integer",
+          "x-omitempty": false
         },
         "username": {
           "type": "string"
@@ -1461,7 +1475,9 @@ func init() {
           "format": "date-time"
         },
         "rating": {
-          "type": "string"
+          "type": "integer",
+          "maximum": 10,
+          "x-omitempty": false
         },
         "uuid": {
           "type": "string"

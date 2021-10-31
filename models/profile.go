@@ -24,19 +24,19 @@ type Profile struct {
 	Identifier int64 `json:"identifier,omitempty"`
 
 	// points
-	Points int64 `json:"points,omitempty"`
+	Points int64 `json:"points"`
 
 	// total comments
-	TotalComments int64 `json:"total_comments,omitempty"`
+	TotalComments int64 `json:"total_comments"`
 
 	// total posts
-	TotalPosts int64 `json:"total_posts,omitempty"`
+	TotalPosts int64 `json:"total_posts"`
 
 	// total ratings
-	TotalRatings int64 `json:"total_ratings,omitempty"`
+	TotalRatings int64 `json:"total_ratings"`
 
 	// total submissions
-	TotalSubmissions int64 `json:"total_submissions,omitempty"`
+	TotalSubmissions int64 `json:"total_submissions"`
 
 	// username
 	Username string `json:"username,omitempty"`

@@ -83,6 +83,8 @@ type PutIdeasUUIDSubmissionsRateBody struct {
 	// rating
 	// Example: 10
 	// Required: true
+	// Maximum: 10
+	// Minimum: 1
 	Rating *int64 `json:"rating"`
 }
 
@@ -103,6 +105,14 @@ func (o *PutIdeasUUIDSubmissionsRateBody) Validate(formats strfmt.Registry) erro
 func (o *PutIdeasUUIDSubmissionsRateBody) validateRating(formats strfmt.Registry) error {
 
 	if err := validate.Required("rating"+"."+"rating", "body", o.Rating); err != nil {
+		return err
+	}
+
+	if err := validate.MinimumInt("rating"+"."+"rating", "body", *o.Rating, 1, false); err != nil {
+		return err
+	}
+
+	if err := validate.MaximumInt("rating"+"."+"rating", "body", *o.Rating, 10, false); err != nil {
 		return err
 	}
 

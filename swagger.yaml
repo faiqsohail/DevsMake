@@ -139,7 +139,6 @@ paths:
       - name: "limit"
         in: "query"
         description: "The maximum number of profiles to fetch"
-        required: true
         type: "integer"
         default: 100
         minimum: 1
@@ -147,7 +146,6 @@ paths:
       - name: "offset"
         in: "query"
         description: "The number of profiles to skip before starting to collect the result set."
-        required: true
         type: "integer"
         default: 0
       responses:
@@ -176,7 +174,6 @@ paths:
       - name: "limit"
         in: "query"
         description: "The maximum number of posts to fetch"
-        required: true
         type: "integer"
         default: 100
         minimum: 1
@@ -184,7 +181,6 @@ paths:
       - name: "offset"
         in: "query"
         description: "The number of posts to skip before starting to collect the result set."
-        required: true
         type: "integer"
         default: 0
       responses:
@@ -348,6 +344,8 @@ paths:
           properties:
             rating:
               type: "integer"
+              minimum: 1
+              maximum: 10
               example: 10
       responses:
         '200':
@@ -409,14 +407,19 @@ definitions:
         type: "string"
       points:
         type: "integer"
+        x-omitempty: false
       total_posts:
         type: "integer"
+        x-omitempty: false
       total_comments:
         type: "integer"
+        x-omitempty: false
       total_submissions:
         type: "integer"
+        x-omitempty: false
       total_ratings:
         type: "integer"
+        x-omitempty: false
   Idea:
     type: "object"
     required:
@@ -434,10 +437,13 @@ definitions:
         type: "string"
       submissions:
         type: "integer"
+        x-omitempty: false
       likes:
         type: "integer"
+        x-omitempty: false
       dislikes:
         type: "integer"
+        x-omitempty: false
       created:
         type: "string"
         format: "date-time"
@@ -469,7 +475,9 @@ definitions:
       comment:
         type: "string"
       rating:
-        type: "string"
+        type: "integer"
+        maximum: 10
+        x-omitempty: false
       created:
         type: "string"
         format: "date-time"

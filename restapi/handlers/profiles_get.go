@@ -19,7 +19,7 @@ func NewProfilesHandler(accountRepo interfaces.AccountRepository) *ProfilesHandl
 }
 
 func (handler *ProfilesHandler) Handle(params profile.GetProfilesParams) middleware.Responder {
-	users, err := handler.db.GetUsers(uint64(params.Limit), uint64(params.Offset), *params.Sort)
+	users, err := handler.db.GetUsers(uint64(*params.Limit), uint64(*params.Offset), *params.Sort)
 	if err != nil {
 		errMsg := err.Error()
 		return profile.NewGetProfilesDefault(500).WithPayload(

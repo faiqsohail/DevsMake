@@ -29,9 +29,9 @@ func NewGetProfilesParams() GetProfilesParams {
 	)
 
 	return GetProfilesParams{
-		Limit: limitDefault,
+		Limit: &limitDefault,
 
-		Offset: offsetDefault,
+		Offset: &offsetDefault,
 
 		Sort: &sortDefault,
 	}
@@ -47,19 +47,17 @@ type GetProfilesParams struct {
 	HTTPRequest *http.Request `json:"-"`
 
 	/*The maximum number of profiles to fetch
-	  Required: true
 	  Maximum: 1000
 	  Minimum: 1
 	  In: query
 	  Default: 100
 	*/
-	Limit int64
+	Limit *int64
 	/*The number of profiles to skip before starting to collect the result set.
-	  Required: true
 	  In: query
 	  Default: 0
 	*/
-	Offset int64
+	Offset *int64
 	/*Sort profiles fetched based on a criteria
 	  In: query
 	  Default: "points"
@@ -100,26 +98,24 @@ func (o *GetProfilesParams) BindRequest(r *http.Request, route *middleware.Match
 
 // bindLimit binds and validates parameter Limit from query.
 func (o *GetProfilesParams) bindLimit(rawData []string, hasKey bool, formats strfmt.Registry) error {
-	if !hasKey {
-		return errors.Required("limit", "query", rawData)
-	}
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
 	}
 
-	// Required: true
+	// Required: false
 	// AllowEmptyValue: false
 
-	if err := validate.RequiredString("limit", "query", raw); err != nil {
-		return err
+	if raw == "" { // empty values pass all other validations
+		// Default values have been previously initialized by NewGetProfilesParams()
+		return nil
 	}
 
 	value, err := swag.ConvertInt64(raw)
 	if err != nil {
 		return errors.InvalidType("limit", "query", "int64", raw)
 	}
-	o.Limit = value
+	o.Limit = &value
 
 	if err := o.validateLimit(formats); err != nil {
 		return err
@@ -131,11 +127,11 @@ func (o *GetProfilesParams) bindLimit(rawData []string, hasKey bool, formats str
 // validateLimit carries on validations for parameter Limit
 func (o *GetProfilesParams) validateLimit(formats strfmt.Registry) error {
 
-	if err := validate.MinimumInt("limit", "query", o.Limit, 1, false); err != nil {
+	if err := validate.MinimumInt("limit", "query", *o.Limit, 1, false); err != nil {
 		return err
 	}
 
-	if err := validate.MaximumInt("limit", "query", o.Limit, 1000, false); err != nil {
+	if err := validate.MaximumInt("limit", "query", *o.Limit, 1000, false); err != nil {
 		return err
 	}
 
@@ -144,26 +140,24 @@ func (o *GetProfilesParams) validateLimit(formats strfmt.Registry) error {
 
 // bindOffset binds and validates parameter Offset from query.
 func (o *GetProfilesParams) bindOffset(rawData []string, hasKey bool, formats strfmt.Registry) error {
-	if !hasKey {
-		return errors.Required("offset", "query", rawData)
-	}
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
 	}
 
-	// Required: true
+	// Required: false
 	// AllowEmptyValue: false
 
-	if err := validate.RequiredString("offset", "query", raw); err != nil {
-		return err
+	if raw == "" { // empty values pass all other validations
+		// Default values have been previously initialized by NewGetProfilesParams()
+		return nil
 	}
 
 	value, err := swag.ConvertInt64(raw)
 	if err != nil {
 		return errors.InvalidType("offset", "query", "int64", raw)
 	}
-	o.Offset = value
+	o.Offset = &value
 
 	return nil
 }
