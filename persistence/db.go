@@ -11,6 +11,7 @@ import (
 
 type Repositories struct {
 	AccountRepo interfaces.AccountRepository
+	PostRepos   interfaces.PostRepositories
 	db          *sql.DB
 }
 
@@ -27,6 +28,7 @@ func NewRepository() (*Repositories, error) {
 
 	return &Repositories{
 		AccountRepo: NewAccountRepository(db),
+		PostRepos:   NewPostRepositories(db),
 		db:          db,
 	}, nil
 }
