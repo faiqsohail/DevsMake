@@ -98,7 +98,7 @@ func FetchAuthedUser(token string) (*github.User, error) {
 			return nil, errors.New("unable to fetch the logged in user")
 		}
 
-		GetUserCache().Set(token, &githubUser, cache.DefaultExpiration)
+		GetUserCache().Set(token, githubUser, cache.DefaultExpiration)
 		return githubUser, nil
 	}
 

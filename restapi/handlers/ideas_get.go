@@ -19,7 +19,11 @@ func NewIdeasHandler(postRepos interfaces.PostRepositories) *IdeasHandler {
 }
 
 func (handler *IdeasHandler) Handle(params idea_post.GetIdeasParams) middleware.Responder {
-	ideas, err := handler.db.GetIdeas(uint64(*params.Limit), uint64(*params.Offset), *params.Query)
+	query := ""
+	if params.Query != nil {
+		query = *params.Query
+	}
+	ideas, err := handler.db.GetIdeas(uint64(*params.Limit), uint64(*params.Offset), query)
 	if err != nil {
 		errMsg := err.Error()
 		return idea_post.NewGetIdeasDefault(500).WithPayload(

@@ -51,10 +51,11 @@ func (r *PostRepos) GetPosts(limit uint64, offset uint64, search string) (models
 
 	query := `
 		SELECT id, uuid, author_id, title, description, deleted, modified, created 
-		FROM posts WHERE deleted = 0 AND (title LIKE '%?%' OR description LIKE '%?%') 
+		FROM posts WHERE deleted = 0 AND (title LIKE ? OR description LIKE ?) 
 		ORDER BY id DESC LIMIT ?, ?
   	`
 
+	search = "%" + search + "%"
 	results, err := r.db.Query(query, search, search, offset, limit)
 	if err != nil {
 		return nil, err
