@@ -30,6 +30,7 @@ func configureAPI(api *operations.DevsMakeAPI) http.Handler {
 	api.JSONConsumer = runtime.JSONConsumer()
 	api.JSONProducer = runtime.JSONProducer()
 
+	util.InitUserCache()
 	repo, err := persistence.NewRepository()
 
 	if err != nil {
@@ -57,6 +58,11 @@ func configureAPI(api *operations.DevsMakeAPI) http.Handler {
 	api.ProfileGetProfileHandler = handlers.NewProfileHandler(repo.AccountRepo)
 	api.ProfileGetProfileIDHandler = handlers.NewProfileIDHandler(repo.AccountRepo)
 	api.ProfileGetProfilesHandler = handlers.NewProfilesHandler(repo.AccountRepo)
+
+	api.IdeaPostGetIdeasHandler = handlers.NewIdeasHandler(repo.PostRepos)
+	api.IdeaPostGetIdeasUUIDHandler = handlers.NewIdeaUUIDHandler(repo.PostRepos)
+	api.IdeaPostPostIdeasHandler = handlers.NewIdeaCreateHandler(repo.AccountRepo, repo.PostRepos)
+	api.IdeaPostPutIdeasUUIDRateHandler = handlers.NewIdeaPutRatingHandler(repo.AccountRepo, repo.PostRepos)
 
 	api.PreServerShutdown = func() {}
 	api.ServerShutdown = func() {}

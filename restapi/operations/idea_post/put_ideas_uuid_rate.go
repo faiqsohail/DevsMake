@@ -83,7 +83,7 @@ type PutIdeasUUIDRateBody struct {
 
 	// rating
 	// Required: true
-	// Enum: [like dislike]
+	// Enum: [like neutral dislike]
 	Rating *string `json:"rating"`
 }
 
@@ -105,7 +105,7 @@ var putIdeasUuidRateBodyTypeRatingPropEnum []interface{}
 
 func init() {
 	var res []string
-	if err := json.Unmarshal([]byte(`["like","dislike"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["like","neutral","dislike"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {
@@ -117,6 +117,9 @@ const (
 
 	// PutIdeasUUIDRateBodyRatingLike captures enum value "like"
 	PutIdeasUUIDRateBodyRatingLike string = "like"
+
+	// PutIdeasUUIDRateBodyRatingNeutral captures enum value "neutral"
+	PutIdeasUUIDRateBodyRatingNeutral string = "neutral"
 
 	// PutIdeasUUIDRateBodyRatingDislike captures enum value "dislike"
 	PutIdeasUUIDRateBodyRatingDislike string = "dislike"
