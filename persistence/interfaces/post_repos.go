@@ -12,5 +12,7 @@ const (
 
 type PostRepositories interface {
 	GetPost(string) (*models.Post, error)
+	GetPostSubmissions(string) (models.Submissions, error)
 	GetPostRatings(string, PostRating) (*int, error)
+	GetIdea(string) (*models.Idea, error)
 }
