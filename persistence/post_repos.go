@@ -44,6 +44,40 @@ func (r *PostRepos) GetPost(uuid string) (*models.Post, error) {
 	return &post, nil
 }
 
+func (r *PostRepos) GetPosts(limit uint64, offset uint64, query string) (models.Posts, error) {
+	var posts = models.Posts{}
+
+	query = `
+		SELECT id, uuid, author_id, title, description, deleted, modified, created
+		FROM posts WHERE deleted = 0 AND (title LIKE '%?%' OR description LIKE '%?%')
+		ORDER BY id DESC LIMIT ?, ?
+  	`
+
+	results, err := r.db.Query(query, query, offset, limit)
+	if err != nil {
+		return nil, err
+	}
+
+	for results.Next() {
+		var post models.Post
+
+		results.Scan(
+			&post.ID,
+			&post.UUID,
+			&post.AuthorID,
+			&post.Title,
+			&post.Description,
+			&post.Deleted,
+			&post.Modified,
+			&post.Created,
+		)
+
+		posts = append(posts, post)
+	}
+	return posts, nil
+
+}
+
 func (r *PostRepos) GetPostSubmissions(uuid string) (models.Submissions, error) {
 	var submissions = models.Submissions{}
 
@@ -88,6 +122,8 @@ func (r *PostRepos) GetPostRatings(uuid string, rating interfaces.PostRating) (*
 }
 
 func (r *PostRepos) GetIdea(uuid string) (*models.Idea, error) {
+	// TODO make more performant
+
 	post, err := r.GetPost(uuid)
 	if err != nil {
 		return nil, err
@@ -121,4 +157,40 @@ func (r *PostRepos) GetIdea(uuid string) (*models.Idea, error) {
 		Modified:    post.Modified,
 		Created:     post.Created,
 	}, nil
+}
+
+func (r *PostRepos) GetIdeas(limit uint64, offset uint64, query string) (models.Ideas, error) {
+	var ideas = models.Ideas{}
+
+	posts, err := r.GetPosts(limit, offset, query)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(posts) == 0 {
+		return ideas, nil
+	}
+
+	// TODO make more performant
+	for _, post := range posts {
+		likes, _ := r.GetPostRatings(post.UUID, interfaces.Like)
+		dislikes, _ := r.GetPostRatings(post.UUID, interfaces.Dislike)
+		submissions, _ := r.GetPostSubmissions(post.UUID)
+
+		ideas = append(ideas,
+			models.Idea{
+				ID:          post.ID,
+				UUID:        post.UUID,
+				AuthorID:    post.AuthorID,
+				Title:       post.Title,
+				Description: post.Description,
+				Likes:       *likes,
+				Dislikes:    *dislikes,
+				Submissions: len(submissions),
+				Deleted:     post.Deleted,
+				Modified:    post.Modified,
+				Created:     post.Created,
+			})
+	}
+	return ideas, nil
 }
