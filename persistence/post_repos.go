@@ -145,14 +145,14 @@ func (r *PostRepos) RatePost(raterID uint64, postUUID string, rating interfaces.
 
 	if count != 0 {
 		_, err := r.db.
-			Query("UPDATE post_ratings SET rating = ? WHERE post_uuid = ? AND rater_id = ?",
+			Query("UPDATE posts_ratings SET rating = ? WHERE post_uuid = ? AND rater_id = ?",
 				rating, postUUID, raterID)
 
 		return err
 	}
 
 	_, err = r.db.
-		Query("INSERT INTO post_ratings (post_uuid, rater_id, rating) VALUES (?, ?, ?)", postUUID, raterID, rating)
+		Query("INSERT INTO posts_ratings (post_uuid, rater_id, rating) VALUES (?, ?, ?)", postUUID, raterID, rating)
 
 	return err
 }

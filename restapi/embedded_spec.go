@@ -339,6 +339,7 @@ func init() {
                   "type": "string",
                   "enum": [
                     "like",
+                    "neutral",
                     "dislike"
                   ]
                 }
@@ -1108,6 +1109,7 @@ func init() {
                   "type": "string",
                   "enum": [
                     "like",
+                    "neutral",
                     "dislike"
                   ]
                 }

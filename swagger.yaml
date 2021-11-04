@@ -376,7 +376,7 @@ paths:
           properties:
             rating:
               type: "string"
-              enum: ["like", "dislike"]
+              enum: ["like", "neutral", "dislike"]
       responses:
         '200':
           description: "the idea post which was rated"
