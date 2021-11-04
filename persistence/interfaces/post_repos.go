@@ -13,6 +13,7 @@ const (
 type PostRepositories interface {
 	GetPost(string) (*models.Post, error)
 	GetPosts(uint64, uint64, string) (models.Posts, error)
+	CreatePost(uint64, string, string) (string, error)
 	GetIdea(string) (*models.Idea, error)
 	GetIdeas(uint64, uint64, string) (models.Ideas, error)
 	GetPostSubmissions(string) (models.Submissions, error)

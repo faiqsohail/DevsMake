@@ -1,15 +1,12 @@
 package handlers
 
 import (
-	"context"
 	"devsmake/models"
 	"devsmake/persistence/interfaces"
 	"devsmake/restapi/operations/profile"
 	"devsmake/util"
 
 	"github.com/go-openapi/runtime/middleware"
-	"github.com/google/go-github/github"
-	"golang.org/x/oauth2"
 )
 
 type ProfileHandler struct {
@@ -23,13 +20,10 @@ func NewProfileHandler(accountRepo interfaces.AccountRepository) *ProfileHandler
 }
 
 func (handler *ProfileHandler) Handle(params profile.GetProfileParams, principal *models.Principal) middleware.Responder {
-	p := string(*principal)
-	oauthClient := util.GetOAuthConfig().Client(context.TODO(), &oauth2.Token{AccessToken: p})
-	client := github.NewClient(oauthClient)
+	user, err := util.FetchAuthedUser(string(*principal))
 
-	user, _, err := client.Users.Get(context.TODO(), "")
 	if err != nil {
-		errMsg := "Unable to fetch the logged in user"
+		errMsg := err.Error()
 		return profile.NewGetProfileDefault(500).WithPayload(
 			&models.Error{
 				Message: &errMsg,

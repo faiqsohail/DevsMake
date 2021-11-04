@@ -3,6 +3,7 @@ package util
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -12,6 +13,7 @@ import (
 	oidc "github.com/coreos/go-oidc"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/google/go-github/github"
 	"golang.org/x/net/context"
 	"golang.org/x/oauth2"
 	githuboauth "golang.org/x/oauth2/github"
@@ -85,6 +87,19 @@ func IsAuthenticated(token string) (bool, error) {
 		return false, nil
 	}
 	return true, nil
+}
+
+func FetchAuthedUser(token string) (*github.User, error) {
+	// TODO implement caching
+	oauthClient := GetOAuthConfig().Client(context.TODO(), &oauth2.Token{AccessToken: token})
+	client := github.NewClient(oauthClient)
+
+	user, _, err := client.Users.Get(context.TODO(), "")
+	if err != nil {
+		return nil, errors.New("unable to fetch the logged in user")
+	}
+
+	return user, nil
 }
 
 func GenerateStateCookie(w http.ResponseWriter) string {

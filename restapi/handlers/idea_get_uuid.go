@@ -8,17 +8,17 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 )
 
-type IdeasUUIDHandler struct {
+type IdeaUUIDHandler struct {
 	db interfaces.PostRepositories
 }
 
-func NewIdeasUUIDHandler(postRepos interfaces.PostRepositories) *IdeasUUIDHandler {
-	return &IdeasUUIDHandler{
+func NewIdeaUUIDHandler(postRepos interfaces.PostRepositories) *IdeaUUIDHandler {
+	return &IdeaUUIDHandler{
 		db: postRepos,
 	}
 }
 
-func (handler *IdeasUUIDHandler) Handle(params idea_post.GetIdeasUUIDParams) middleware.Responder {
+func (handler *IdeaUUIDHandler) Handle(params idea_post.GetIdeasUUIDParams) middleware.Responder {
 	idea, err := handler.db.GetIdea(params.UUID)
 	if err != nil {
 		msg := err.Error()

@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"devsmake/persistence/interfaces"
 	"devsmake/persistence/models"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 type PostRepos struct {
@@ -20,7 +22,7 @@ func (r *PostRepos) GetPost(uuid string) (*models.Post, error) {
 	var post models.Post
 
 	query := `
-		SELECT id, uuid, author_id, title, description, deleted, modified, created
+		SELECT id, uuid, author_id, title, description, deleted, modified, created 
 		FROM posts WHERE deleted = 0 AND uuid = ?
   	`
 
@@ -48,8 +50,8 @@ func (r *PostRepos) GetPosts(limit uint64, offset uint64, search string) (models
 	var posts = models.Posts{}
 
 	query := `
-		SELECT id, uuid, author_id, title, description, deleted, modified, created
-		FROM posts WHERE deleted = 0 AND (title LIKE '%?%' OR description LIKE '%?%')
+		SELECT id, uuid, author_id, title, description, deleted, modified, created 
+		FROM posts WHERE deleted = 0 AND (title LIKE '%?%' OR description LIKE '%?%') 
 		ORDER BY id DESC LIMIT ?, ?
   	`
 
@@ -76,6 +78,17 @@ func (r *PostRepos) GetPosts(limit uint64, offset uint64, search string) (models
 	}
 	return posts, nil
 
+}
+
+func (r *PostRepos) CreatePost(authorId uint64, title string, desc string) (string, error) {
+	uuid := uuid.NewV4().String()
+	query := `
+		INSERT INTO posts (uuid, author_id, title, description) 
+		VALUES (?, ?, ?, ?)
+	`
+	_, err := r.db.Query(query, uuid, authorId, title, desc)
+
+	return uuid, err
 }
 
 func (r *PostRepos) GetPostSubmissions(uuid string) (models.Submissions, error) {
