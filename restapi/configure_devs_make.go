@@ -58,6 +58,9 @@ func configureAPI(api *operations.DevsMakeAPI) http.Handler {
 	api.ProfileGetProfileIDHandler = handlers.NewProfileIDHandler(repo.AccountRepo)
 	api.ProfileGetProfilesHandler = handlers.NewProfilesHandler(repo.AccountRepo)
 
+	api.IdeaPostGetIdeasHandler = handlers.NewIdeasHandler(repo.PostRepos)
+	api.IdeaPostGetIdeasUUIDHandler = handlers.NewIdeasUUIDHandler(repo.PostRepos)
+
 	api.PreServerShutdown = func() {}
 	api.ServerShutdown = func() {}
 
