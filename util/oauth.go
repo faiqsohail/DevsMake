@@ -5,30 +5,44 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"os"
+	"sync"
 	"time"
 
 	oidc "github.com/coreos/go-oidc"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/google/go-github/github"
+	"github.com/patrickmn/go-cache"
 	"golang.org/x/net/context"
 	"golang.org/x/oauth2"
 	githuboauth "golang.org/x/oauth2/github"
 )
 
 var (
-	userInfoURL = "https://api.github.com/user"
-
 	config = oauth2.Config{
 		ClientID:     os.Getenv("CLIENT_ID"),
 		ClientSecret: os.Getenv("CLIENT_SECRET"),
 		Endpoint:     githuboauth.Endpoint,
 		Scopes:       []string{"user:email", "repo:public_repo"},
 	}
+
+	userCache = cache.Cache{}
 )
+
+func InitUserCache() cache.Cache {
+	var doOnce sync.Once
+
+	doOnce.Do(func() {
+		userCache = *cache.New(6*time.Hour, 5*time.Minute)
+	})
+	return userCache
+}
+
+func GetUserCache() cache.Cache {
+	return userCache
+}
 
 //GetOAuthConfig
 func GetOAuthConfig() *oauth2.Config {
@@ -64,42 +78,31 @@ func DoCallback(r *http.Request) (*oauth2.Token, error) {
 }
 
 func IsAuthenticated(token string) (bool, error) {
-	bearToken := "Bearer " + token
-	req, err := http.NewRequest("GET", userInfoURL, nil)
-	if err != nil {
-		return false, fmt.Errorf("http request: %v", err)
-	}
+	_, err := FetchAuthedUser(token)
 
-	req.Header.Add("Authorization", bearToken)
-
-	cli := &http.Client{}
-	resp, err := cli.Do(req)
 	if err != nil {
-		return false, fmt.Errorf("http request: %v", err)
-	}
-	defer resp.Body.Close()
-
-	_, err = ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return false, fmt.Errorf("fail to get response: %v", err)
-	}
-	if resp.StatusCode != 200 {
-		return false, nil
+		return false, err
 	}
 	return true, nil
 }
 
 func FetchAuthedUser(token string) (*github.User, error) {
-	// TODO implement caching
-	oauthClient := GetOAuthConfig().Client(context.TODO(), &oauth2.Token{AccessToken: token})
-	client := github.NewClient(oauthClient)
+	user, found := GetUserCache().Get(token)
 
-	user, _, err := client.Users.Get(context.TODO(), "")
-	if err != nil {
-		return nil, errors.New("unable to fetch the logged in user")
+	if !found {
+		oauthClient := GetOAuthConfig().Client(context.TODO(), &oauth2.Token{AccessToken: token})
+		client := github.NewClient(oauthClient)
+
+		githubUser, _, err := client.Users.Get(context.TODO(), "")
+		if err != nil {
+			return nil, errors.New("unable to fetch the logged in user")
+		}
+
+		GetUserCache().Set(token, &githubUser, cache.DefaultExpiration)
+		return githubUser, nil
 	}
 
-	return user, nil
+	return user.(*github.User), nil
 }
 
 func GenerateStateCookie(w http.ResponseWriter) string {

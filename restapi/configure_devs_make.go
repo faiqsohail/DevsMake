@@ -30,6 +30,7 @@ func configureAPI(api *operations.DevsMakeAPI) http.Handler {
 	api.JSONConsumer = runtime.JSONConsumer()
 	api.JSONProducer = runtime.JSONProducer()
 
+	util.InitUserCache()
 	repo, err := persistence.NewRepository()
 
 	if err != nil {
