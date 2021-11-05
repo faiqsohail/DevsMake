@@ -19,4 +19,5 @@ type PostRepositories interface {
 	GetPostSubmissions(string) (models.Submissions, error)
 	GetPostRatings(string, PostRating) (*int, error)
 	RatePost(uint64, string, PostRating) error
+	GetIdeaComments(string) (models.Comments, error)
 }

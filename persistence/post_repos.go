@@ -230,3 +230,35 @@ func (r *PostRepos) GetIdeas(limit uint64, offset uint64, query string) (models.
 	}
 	return ideas, nil
 }
+
+func (r *PostRepos) GetIdeaComments(uuid string) (models.Comments, error) {
+	var comments = models.Comments{}
+
+	query := `
+		SELECT id, uuid, post_uuid, author_id, comment, deleted, created 
+		FROM posts_comments WHERE deleted = 0 AND post_uuid = ? 
+		ORDER BY id DESC
+  	`
+
+	results, err := r.db.Query(query, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	for results.Next() {
+		var comment models.Comment
+
+		results.Scan(
+			&comment.ID,
+			&comment.UUID,
+			&comment.PostUUID,
+			&comment.AuthorID,
+			&comment.Comment,
+			&comment.Deleted,
+			&comment.Created,
+		)
+
+		comments = append(comments, comment)
+	}
+	return comments, nil
+}
