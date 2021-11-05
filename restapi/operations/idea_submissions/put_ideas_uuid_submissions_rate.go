@@ -86,6 +86,11 @@ type PutIdeasUUIDSubmissionsRateBody struct {
 	// Maximum: 10
 	// Minimum: 1
 	Rating *int64 `json:"rating"`
+
+	// submission uuid
+	// Example: e2c6b170-eb62-4006-8a26-8a57bc36a4ae
+	// Required: true
+	SubmissionUUID *string `json:"submission_uuid"`
 }
 
 // Validate validates this put ideas UUID submissions rate body
@@ -93,6 +98,10 @@ func (o *PutIdeasUUIDSubmissionsRateBody) Validate(formats strfmt.Registry) erro
 	var res []error
 
 	if err := o.validateRating(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateSubmissionUUID(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -113,6 +122,15 @@ func (o *PutIdeasUUIDSubmissionsRateBody) validateRating(formats strfmt.Registry
 	}
 
 	if err := validate.MaximumInt("rating"+"."+"rating", "body", *o.Rating, 10, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (o *PutIdeasUUIDSubmissionsRateBody) validateSubmissionUUID(formats strfmt.Registry) error {
+
+	if err := validate.Required("rating"+"."+"submission_uuid", "body", o.SubmissionUUID); err != nil {
 		return err
 	}
 

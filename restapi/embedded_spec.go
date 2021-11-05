@@ -453,6 +453,7 @@ func init() {
             "schema": {
               "type": "object",
               "required": [
+                "submission_uuid",
                 "rating"
               ],
               "properties": {
@@ -461,6 +462,10 @@ func init() {
                   "maximum": 10,
                   "minimum": 1,
                   "example": 10
+                },
+                "submission_uuid": {
+                  "type": "string",
+                  "example": "e2c6b170-eb62-4006-8a26-8a57bc36a4ae"
                 }
               }
             }
@@ -1223,6 +1228,7 @@ func init() {
             "schema": {
               "type": "object",
               "required": [
+                "submission_uuid",
                 "rating"
               ],
               "properties": {
@@ -1231,6 +1237,10 @@ func init() {
                   "maximum": 10,
                   "minimum": 1,
                   "example": 10
+                },
+                "submission_uuid": {
+                  "type": "string",
+                  "example": "e2c6b170-eb62-4006-8a26-8a57bc36a4ae"
                 }
               }
             }

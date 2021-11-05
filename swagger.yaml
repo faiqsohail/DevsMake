@@ -340,8 +340,12 @@ paths:
         schema:
           type: "object"
           required:
+            - submission_uuid
             - rating
           properties:
+            submission_uuid:
+              type: "string"
+              example: "e2c6b170-eb62-4006-8a26-8a57bc36a4ae"
             rating:
               type: "integer"
               minimum: 1
