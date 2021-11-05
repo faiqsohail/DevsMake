@@ -231,7 +231,34 @@ func (r *PostRepos) GetIdeas(limit uint64, offset uint64, query string) (models.
 	return ideas, nil
 }
 
-func (r *PostRepos) GetIdeaComments(uuid string) (models.Comments, error) {
+func (r *PostRepos) GetComment(uuid string) (*models.Comment, error) {
+	var comment models.Comment
+
+	query := `
+		SELECT id, uuid, post_uuid, author_id, comment, deleted, created 
+		FROM posts_comments WHERE deleted = 0 AND uuid = ?
+  	`
+
+	err := r.db.
+		QueryRow(query, uuid).
+		Scan(
+			&comment.ID,
+			&comment.UUID,
+			&comment.PostUUID,
+			&comment.AuthorID,
+			&comment.Comment,
+			&comment.Deleted,
+			&comment.Created,
+		)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &comment, nil
+}
+
+func (r *PostRepos) GetIdeaComments(postUUID string) (models.Comments, error) {
 	var comments = models.Comments{}
 
 	query := `
@@ -240,7 +267,7 @@ func (r *PostRepos) GetIdeaComments(uuid string) (models.Comments, error) {
 		ORDER BY id DESC
   	`
 
-	results, err := r.db.Query(query, uuid)
+	results, err := r.db.Query(query, postUUID)
 	if err != nil {
 		return nil, err
 	}
@@ -261,4 +288,15 @@ func (r *PostRepos) GetIdeaComments(uuid string) (models.Comments, error) {
 		comments = append(comments, comment)
 	}
 	return comments, nil
+}
+
+func (r *PostRepos) CreateIdeaComment(authorId uint64, postUUID string, comment string) (string, error) {
+	uuid := uuid.NewV4().String()
+	query := `
+		INSERT INTO posts_comments (uuid, post_uuid, author_id, comment) 
+		VALUES (?, ?, ?, ?)
+	`
+	_, err := r.db.Query(query, uuid, postUUID, authorId, comment)
+
+	return uuid, err
 }
