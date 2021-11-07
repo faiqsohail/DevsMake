@@ -32,7 +32,7 @@ func (is *IdeaSubmission) PublicIdeaSubmission() *models.Submission {
 	}
 }
 
-func (idea_submissions IdeaSubmissions) PublicIdeas() []*models.Submission {
+func (idea_submissions IdeaSubmissions) PublicIdeaSubmissions() []*models.Submission {
 	result := make([]*models.Submission, len(idea_submissions))
 	for index, idea_submission := range idea_submissions {
 		result[index] = idea_submission.PublicIdeaSubmission()
