@@ -68,6 +68,7 @@ func configureAPI(api *operations.DevsMakeAPI) http.Handler {
 	api.IdeaCommentsPostIdeasUUIDCommentsHandler = handlers.NewIdeaCreateCommentsHandler(repo.AccountRepo, repo.PostRepos)
 
 	api.IdeaSubmissionsGetIdeasUUIDSubmissionsHandler = handlers.NewIdeaGetSubmissionsHandler(repo.PostRepos)
+	api.IdeaSubmissionsPostIdeasUUIDSubmissionsHandler = handlers.NewIdeaCreateSubmissionsHandler(repo.AccountRepo, repo.PostRepos)
 
 	api.PreServerShutdown = func() {}
 	api.ServerShutdown = func() {}

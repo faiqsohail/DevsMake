@@ -21,6 +21,7 @@ type PostRepositories interface {
 	GetComment(string) (*models.Comment, error)
 	GetIdeaComments(string) (models.Comments, error)
 	CreateIdeaComment(uint64, string, string) (string, error)
+	CreateSubmission(uint64, string, string) (string, error)
 	GetSubmission(string) (*models.Submission, error)
 	GetSubmissions(string) (models.Submissions, error)
 	GetSubmissionRating(string) (*int, error)

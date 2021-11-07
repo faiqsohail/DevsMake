@@ -93,6 +93,17 @@ func (r *PostRepos) CreatePost(authorId uint64, title string, desc string) (stri
 	return uuid, err
 }
 
+func (r *PostRepos) CreateSubmission(authorId uint64, postUUID string, comment string) (string, error) {
+	uuid := uuid.NewV4().String()
+	query := `
+		INSERT INTO posts_submissions (uuid, author_id, post_uuid, comment) 
+		VALUES (?, ?, ?, ?)
+	`
+	_, err := r.db.Query(query, uuid, authorId, postUUID, comment)
+
+	return uuid, err
+}
+
 func (r *PostRepos) GetSubmission(uuid string) (*models.Submission, error) {
 	var submission models.Submission
 
