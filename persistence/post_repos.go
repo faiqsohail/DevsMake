@@ -198,6 +198,28 @@ func (r *PostRepos) GetSubmissionRating(postSubmissionUUID string) (*int, error)
 	return &rating, nil
 }
 
+func (r *PostRepos) RateSubmissionPost(raterId uint64, submissionUUID string, rating uint64) error {
+	var count int
+
+	err := r.db.QueryRow("SELECT COUNT(*) FROM posts_submissions_ratings WHERE post_submission_uuid = ? AND rater_id = ?", submissionUUID, raterId).Scan(&count)
+	if err != nil {
+		return err
+	}
+
+	if count != 0 {
+		_, err := r.db.
+			Query("UPDATE posts_submissions_ratings SET rating = ? WHERE post_submission_uuid = ? AND rater_id = ?",
+				rating, submissionUUID, raterId)
+
+		return err
+	}
+
+	_, err = r.db.
+		Query("INSERT INTO posts_submissions_ratings (post_submission_uuid, rater_id, rating) VALUES (?, ?, ?)", submissionUUID, raterId, rating)
+
+	return err
+}
+
 func (r *PostRepos) RatePost(raterID uint64, postUUID string, rating interfaces.PostRating) error {
 	var count int
 
