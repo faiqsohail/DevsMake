@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"devsmake/persistence/interfaces"
 	"devsmake/persistence/models"
+	"math"
 
 	uuid "github.com/satori/go.uuid"
 )
@@ -92,7 +93,35 @@ func (r *PostRepos) CreatePost(authorId uint64, title string, desc string) (stri
 	return uuid, err
 }
 
-func (r *PostRepos) GetPostSubmissions(uuid string) (models.Submissions, error) {
+func (r *PostRepos) GetSubmission(uuid string) (*models.Submission, error) {
+	var submission models.Submission
+
+	query := `
+		SELECT id, uuid, post_uuid, author_id, comment, deleted, modified, created 
+		FROM posts_submissions WHERE deleted = 0 AND uuid = ?
+  	`
+
+	err := r.db.
+		QueryRow(query, uuid).
+		Scan(
+			&submission.ID,
+			&submission.UUID,
+			&submission.PostUUID,
+			&submission.AuthorID,
+			&submission.Comment,
+			&submission.Deleted,
+			&submission.Modified,
+			&submission.Created,
+		)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &submission, nil
+}
+
+func (r *PostRepos) GetSubmissions(postUUID string) (models.Submissions, error) {
 	var submissions = models.Submissions{}
 
 	query := `
@@ -100,7 +129,7 @@ func (r *PostRepos) GetPostSubmissions(uuid string) (models.Submissions, error) 
 		FROM posts_submissions WHERE deleted = 0 AND post_uuid = ?
   	`
 
-	results, err := r.db.Query(query, uuid)
+	results, err := r.db.Query(query, postUUID)
 	if err != nil {
 		return nil, err
 	}
@@ -133,6 +162,29 @@ func (r *PostRepos) GetPostRatings(uuid string, rating interfaces.PostRating) (*
 	}
 
 	return &count, nil
+}
+
+func (r *PostRepos) GetSubmissionRating(postSubmissionUUID string) (*int, error) {
+	var total_ratings int
+	var sum_rating int
+
+	query := `
+		SELECT COUNT(*) as total_ratings, SUM(rating) as sum_rating 
+		FROM posts_submissions_ratings 
+		WHERE post_submission_uuid = ? AND rating > 0
+  	`
+
+	err := r.db.QueryRow(query, postSubmissionUUID).Scan(&total_ratings, &sum_rating)
+	if err != nil {
+		return nil, err
+	}
+
+	if total_ratings == 0 {
+		return &total_ratings, nil
+	}
+
+	rating := int(math.RoundToEven(float64(sum_rating) / float64(total_ratings)))
+	return &rating, nil
 }
 
 func (r *PostRepos) RatePost(raterID uint64, postUUID string, rating interfaces.PostRating) error {
@@ -175,7 +227,7 @@ func (r *PostRepos) GetIdea(uuid string) (*models.Idea, error) {
 		return nil, err
 	}
 
-	submissions, err := r.GetPostSubmissions(uuid)
+	submissions, err := r.GetSubmissions(uuid)
 	if err != nil {
 		return nil, err
 	}
@@ -211,7 +263,7 @@ func (r *PostRepos) GetIdeas(limit uint64, offset uint64, query string) (models.
 	for _, post := range posts {
 		likes, _ := r.GetPostRatings(post.UUID, interfaces.Like)
 		dislikes, _ := r.GetPostRatings(post.UUID, interfaces.Dislike)
-		submissions, _ := r.GetPostSubmissions(post.UUID)
+		submissions, _ := r.GetSubmissions(post.UUID)
 
 		ideas = append(ideas,
 			models.Idea{
@@ -299,4 +351,61 @@ func (r *PostRepos) CreateIdeaComment(authorId uint64, postUUID string, comment 
 	_, err := r.db.Query(query, uuid, postUUID, authorId, comment)
 
 	return uuid, err
+}
+
+func (r *PostRepos) GetIdeaSubmission(submissionUUID string) (*models.IdeaSubmission, error) {
+	submission, err := r.GetSubmission(submissionUUID)
+	if err != nil {
+		return nil, err
+	}
+
+	rating, err := r.GetSubmissionRating(submissionUUID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &models.IdeaSubmission{
+		ID:       submission.ID,
+		UUID:     submission.UUID,
+		PostUUID: submission.PostUUID,
+		AuthorID: submission.AuthorID,
+		Comment:  submission.Comment,
+		Rating:   *rating,
+		Deleted:  submission.Deleted,
+		Modified: submission.Modified,
+		Created:  submission.Created,
+	}, nil
+}
+
+func (r *PostRepos) GetIdeaSubmissions(postUUID string) (models.IdeaSubmissions, error) {
+	var idea_submissions = models.IdeaSubmissions{}
+
+	submissions, err := r.GetSubmissions(postUUID)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(submissions) == 0 {
+		return idea_submissions, nil
+	}
+
+	// TODO make more performant
+	for _, submission := range submissions {
+		rating, _ := r.GetSubmissionRating(submission.UUID)
+
+		idea_submissions = append(idea_submissions,
+			models.IdeaSubmission{
+				ID:       submission.ID,
+				UUID:     submission.UUID,
+				PostUUID: submission.PostUUID,
+				AuthorID: submission.AuthorID,
+				Comment:  submission.Comment,
+				Rating:   *rating,
+				Deleted:  submission.Deleted,
+				Modified: submission.Modified,
+				Created:  submission.Created,
+			})
+	}
+
+	return idea_submissions, nil
 }

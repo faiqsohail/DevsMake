@@ -16,10 +16,14 @@ type PostRepositories interface {
 	CreatePost(uint64, string, string) (string, error)
 	GetIdea(string) (*models.Idea, error)
 	GetIdeas(uint64, uint64, string) (models.Ideas, error)
-	GetPostSubmissions(string) (models.Submissions, error)
 	GetPostRatings(string, PostRating) (*int, error)
 	RatePost(uint64, string, PostRating) error
 	GetComment(string) (*models.Comment, error)
 	GetIdeaComments(string) (models.Comments, error)
 	CreateIdeaComment(uint64, string, string) (string, error)
+	GetSubmission(string) (*models.Submission, error)
+	GetSubmissions(string) (models.Submissions, error)
+	GetSubmissionRating(string) (*int, error)
+	GetIdeaSubmission(string) (*models.IdeaSubmission, error)
+	GetIdeaSubmissions(string) (models.IdeaSubmissions, error)
 }
