@@ -41,6 +41,14 @@ func (r *AccountRepo) GetUser(id uint64, providerId bool) (*models.User, error) 
 		return nil, err
 	}
 
+	totalPosts, _ := r.sumPosts(int(user.ID), post)
+	totalSubmissions, _ := r.sumPosts(int(user.ID), submission)
+	totalComments, _ := r.sumPosts(int(user.ID), comment)
+
+	user.TotalPosts = uint64(*totalPosts)
+	user.TotalSubmissinos = uint64(*totalSubmissions)
+	user.TotalComments = uint64(*totalComments)
+
 	return &user, nil
 }
 
@@ -65,6 +73,14 @@ func (r *AccountRepo) GetUsers(limit uint64, offset uint64, sort string) (models
 			&user.Created,
 		)
 
+		totalPosts, _ := r.sumPosts(int(user.ID), post)
+		totalSubmissions, _ := r.sumPosts(int(user.ID), submission)
+		totalComments, _ := r.sumPosts(int(user.ID), comment)
+
+		user.TotalPosts = uint64(*totalPosts)
+		user.TotalSubmissinos = uint64(*totalSubmissions)
+		user.TotalComments = uint64(*totalComments)
+
 		users = append(users, user)
 	}
 	return users, nil
@@ -78,4 +94,35 @@ func (r *AccountRepo) CreateUser(providerId uint64, username string) error {
 		Query("INSERT INTO accounts (provider, provider_id, username) VALUES (?, ?, ?)", provider, providerId, username)
 
 	return err
+}
+
+type postType int64
+
+const (
+	post postType = iota
+	submission
+	comment
+)
+
+func (r *AccountRepo) sumPosts(accountId int, pt postType) (*int, error) {
+	var count int
+
+	var table string
+	switch pt {
+	case post:
+		table = "posts"
+	case submission:
+		table = "posts_submissions"
+	case comment:
+		table = "posts_comments"
+	default:
+		table = "posts"
+	}
+
+	err := r.db.QueryRow("SELECT COUNT(*) FROM "+table+" WHERE author_id = ? AND deleted = 0", accountId).Scan(&count)
+	if err != nil {
+		return nil, err
+	}
+
+	return &count, nil
 }

@@ -16,7 +16,6 @@ type User struct {
 	TotalPosts       uint64 `json:"total_posts"`
 	TotalComments    uint64 `json:"total_comments"`
 	TotalSubmissinos uint64 `json:"total_submissions"`
-	TotalRatings     uint64 `json:"total_ratings"`
 	Created          string `json:"created"`
 }
 
@@ -27,7 +26,6 @@ func (u *User) PublicUser() *models.Profile {
 		Points:           int64(u.Points),
 		TotalPosts:       int64(u.TotalPosts),
 		TotalComments:    int64(u.TotalComments),
-		TotalRatings:     int64(u.TotalRatings),
 		TotalSubmissions: int64(u.TotalSubmissinos),
 		AvatarURL:        util.GenerateAvatarUrl(u.Username),
 	}
