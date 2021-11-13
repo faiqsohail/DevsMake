@@ -25,8 +25,7 @@ services:
       DB_PASSWORD: devsmake
     restart: on-failure
     ports:
-      - "5000:443"
-      - "5001:80"
+      - "8080:8080"
     tty: true
     depends_on:
       - db

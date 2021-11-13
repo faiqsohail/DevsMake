@@ -5,7 +5,6 @@
 //  Bringing together users and developers to create amazing projects.
 //  Schemes:
 //    http
-//    https
 //  Host: devsmake.com
 //  BasePath: /api/v1
 //  Version: 1.0.0

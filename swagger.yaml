@@ -22,7 +22,6 @@ tags:
 - name: "idea submissions"
   description: "Idea post submissions"
 schemes:
-- "https"
 - "http"
 security:
   - github_auth:
