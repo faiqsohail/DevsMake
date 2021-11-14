@@ -39,4 +39,5 @@ docker-compose build
 docker-compose up -d
 ```
 5) Run any migrations locally ```migrate -path migrations -database "mysql://devsmake:devsmake@tcp(localhost:3306)/devsmake" up```
-6) Visit in your browser ```http://localhost:5001``` 🥳
+6) Start frontend dev server ```npm --prefix ./frontend run dev```
+6) Visit in your browser ```http://localhost:3000``` 🥳
