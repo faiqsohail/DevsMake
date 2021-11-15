@@ -68,7 +68,6 @@ func (handler *AuthCallbackHandler) Handle(params auth.GetAuthCallbackParams) mi
 				Value:   token.AccessToken,
 				Expires: token.Expiry,
 				Path:    "/",
-				Secure:  true,
 			}
 			http.SetCookie(w, &sessionCookie)
 
