@@ -14,7 +14,7 @@ import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { Avatar, Button } from '@mui/material';
 import Router from 'next/router';
-
+import { basePath } from '../path.config';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -56,11 +56,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function NavBar() {
+const NavBar = ({profile}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
-  const [user, setUser] = React.useState(true);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -122,8 +120,8 @@ export default function NavBar() {
         </IconButton>
         <p>Leaderboard</p>
       </MenuItem>
-      { user ? 
-      <MenuItem>
+      { profile ? 
+      <MenuItem onClick={() => Router.push(`/profile/${profile.identifier}`)}>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -131,12 +129,12 @@ export default function NavBar() {
           aria-haspopup="true"
           color="inherit"
         >
-           <Avatar sx={{ bgcolor: '#fff' }} src="https://avatars.dicebear.com/api/open-peeps/abcd.svg?size=256"/>
+           <Avatar sx={{ bgcolor: '#fff' }} src={profile.avatar_url}/>
         </IconButton>
-        <p>Profile</p>
+        <p>{profile.username}</p>
       </MenuItem>
-     : <MenuItem>
-        <IconButton size="large" aria-label="login" color="inherit">
+     : <MenuItem onClick={() => Router.push(basePath + `/api/v1/auth/login`)}>
+        <IconButton size="large" aria-label="login" color="inherit" >
             <GitHubIcon />
         </IconButton>
         <p>Login</p>
@@ -149,7 +147,7 @@ export default function NavBar() {
       <AppBar position="static">
         <Toolbar>
             <Avatar src="/logo.png" variant="square" />
-            <Typography
+          <Typography
             variant="h6"
             noWrap
             component="div"
@@ -182,18 +180,19 @@ export default function NavBar() {
             <IconButton size="large" aria-label="leaderboard" color="inherit">
               <LeaderboardIcon />
             </IconButton>
-            {user ?
+            {profile ?
             <IconButton
               size="small"
               edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
               color="inherit"
+              onClick={() => Router.push(`/profile/${profile.identifier}`)}
             >
-              <Avatar sx={{ bgcolor: '#fff' }} src="https://avatars.dicebear.com/api/open-peeps/abcd.svg?size=256"/>
+              <Avatar sx={{ bgcolor: '#fff' }} src={profile.avatar_url}/>
             </IconButton>
             : 
-            <Button variant="contained" startIcon={<GitHubIcon />}>Login</Button> }
+            <Button onClick={() => Router.push(basePath + `/api/v1/auth/login`)} variant="contained" startIcon={<GitHubIcon />}>Login</Button> }
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -214,3 +213,5 @@ export default function NavBar() {
     </Box>
   );
 }
+
+export default NavBar;
