@@ -19,6 +19,6 @@ export default function IdeaCard() {
             Share
           </Button>
         </CardActions>
-      </Card>
-    );
-  }
+     </Card>
+  );
+}

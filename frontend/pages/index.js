@@ -4,26 +4,12 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Button, Grid } from '@mui/material';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
-import NavBar from '../src/NavBar';
-import { basePath } from '../path.config';
-import IdeaCard from '../src/IdeaCard';
+import NavBar from '../src/components/NavBar';
+import IdeaCard from '../src/components/IdeaCard';
+import fetchProfile from '../src/api/fetchProfile';
 
 export async function getServerSideProps(context) {
-  let profile = null;
-  const token = context.req.cookies.sessionCookie ?? false;
-
-  if (token) {
-    const response = await fetch(basePath + `/api/v1/profile`, {
-      headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (response.ok) {
-      profile = await response.json()
-    }
-  }
+  const profile = await fetchProfile(context.req.cookies.sessionCookie);
 
   return {
     props: {
@@ -32,7 +18,7 @@ export async function getServerSideProps(context) {
   }
 }
 
-export default function Home({profile}) {
+const Home = ({profile}) => {
   return (
     <>
       <NavBar profile={profile} />
@@ -61,3 +47,5 @@ export default function Home({profile}) {
     </>
   )
 }
+
+export default Home;

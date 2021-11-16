@@ -1,4 +1,4 @@
-import { basePath } from '../../path.config';
+import { basePath } from '../../src/path.config';
 import { useRouter } from 'next/router'
 
 export async function getStaticPaths() {
