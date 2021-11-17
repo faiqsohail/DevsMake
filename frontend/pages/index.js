@@ -7,18 +7,21 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import NavBar from '../src/components/NavBar';
 import IdeaCard from '../src/components/IdeaCard';
 import fetchProfile from '../src/api/fetchProfile';
+import fetchIdeas from '../src/api/fetchIdeas';
 
 export async function getServerSideProps(context) {
   const profile = await fetchProfile(context.req.cookies.sessionCookie);
+  const ideas = await fetchIdeas();
 
   return {
     props: {
-      profile
+      profile,
+      ideas
     }
   }
 }
 
-const Home = ({profile}) => {
+const Home = ({ profile, ideas }) => {
   return (
     <>
       <NavBar profile={profile} />
@@ -34,14 +37,14 @@ const Home = ({profile}) => {
         </Container>
       </section>
       <section>
-        <Container maxWidth="lg" sx={{mb: 10}}>
-        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-          {Array.from(Array(6)).map((_, index) => (
-            <Grid item xs={2} sm={4} md={4} key={index}>
-              <IdeaCard />
-            </Grid>
-          ))}
-        </Grid>
+        <Container maxWidth="lg" sx={{ mb: 10 }}>
+          <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+            {ideas.map((idea) => (
+              <Grid item xs={2} sm={4} md={4} key={idea.uuid}>
+                <IdeaCard {...idea} />
+              </Grid>
+            ))}
+          </Grid>
         </Container>
       </section>
     </>

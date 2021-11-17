@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { basePath } from '../path.config';
 
 const fetchProfile = async (token) => {
