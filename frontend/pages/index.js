@@ -6,22 +6,23 @@ import { Button, Grid } from '@mui/material';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import NavBar from '../src/components/NavBar';
 import IdeaCard from '../src/components/IdeaCard';
-import fetchProfile from '../src/api/fetchProfile';
 import fetchIdeas from '../src/api/fetchIdeas';
+import useProfile from '../src/hooks/useProfile';
 
-export async function getServerSideProps(context) {
-  const profile = await fetchProfile(context.req.cookies.sessionCookie);
+export async function getStaticProps({ params, req }) {
   const ideas = await fetchIdeas();
 
   return {
-    props: {
-      profile,
-      ideas
+      props: {
+        ideas,
+      },
+      revalidate: 10,
     }
-  }
 }
 
-const Home = ({ profile, ideas }) => {
+const Home = ({ ideas }) => {
+  const profile = useProfile();
+
   return (
     <>
       <NavBar profile={profile} />

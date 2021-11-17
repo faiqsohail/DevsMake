@@ -2,7 +2,6 @@ import { basePath } from '../path.config';
 
 const fetchProfile = async (token) => {
     let profile = null
-
     if (token) {
         const response = await fetch(basePath + `/api/v1/profile`, {
             headers: {
@@ -15,7 +14,7 @@ const fetchProfile = async (token) => {
             profile = await response.json()
         }
     }
-
+    
     return profile
 };
 
