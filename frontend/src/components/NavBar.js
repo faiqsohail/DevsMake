@@ -56,7 +56,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const NavBar = ({profile}) => {
+const NavBar = ({ profile }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -116,29 +116,29 @@ const NavBar = ({profile}) => {
     >
       <MenuItem>
         <IconButton size="large" aria-label="leaderboard" color="inherit">
-            <LeaderboardIcon />
+          <LeaderboardIcon />
         </IconButton>
         <p>Leaderboard</p>
       </MenuItem>
-      { profile ? 
-      <MenuItem onClick={() => Router.push(`/profile/${profile.identifier}`)}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-           <Avatar sx={{ bgcolor: '#fff' }} src={profile.avatar_url}/>
-        </IconButton>
-        <p>{profile.username}</p>
-      </MenuItem>
-     : <MenuItem onClick={() => Router.push(basePath + `/api/v1/auth/login`)}>
-        <IconButton size="large" aria-label="login" color="inherit" >
+      {profile ?
+        <MenuItem onClick={() => Router.push(`/profile/${profile.identifier}`)}>
+          <IconButton
+            size="large"
+            aria-label="account of current user"
+            aria-controls="primary-search-account-menu"
+            aria-haspopup="true"
+            color="inherit"
+          >
+            <Avatar sx={{ bgcolor: '#fff' }} src={profile.avatar_url} />
+          </IconButton>
+          <p>{profile.username}</p>
+        </MenuItem>
+        : <MenuItem onClick={() => Router.push(basePath + `/api/v1/auth/login`)}>
+          <IconButton size="large" aria-label="login" color="inherit" >
             <GitHubIcon />
-        </IconButton>
-        <p>Login</p>
-      </MenuItem> }
+          </IconButton>
+          <p>Login</p>
+        </MenuItem>}
     </Menu>
   );
 
@@ -146,11 +146,12 @@ const NavBar = ({profile}) => {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-            <Avatar src="/logo.png" variant="square" />
+          <Avatar src="/logo.png" variant="square" onClick={() => Router.push(`/`)} />
           <Typography
             variant="h6"
             noWrap
             component="div"
+            onClick={() => Router.push(`/`)}
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
             DevsMake
@@ -164,15 +165,15 @@ const NavBar = ({profile}) => {
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
               onKeyDown={(e) => {
-                  if (e.key == 'Enter') {
-                      var value = e.target.value;
-                      if (value) {
-                        Router.push({
-                            pathname: '/search',
-                            query: { q: encodeURIComponent(value) }
-                        })
-                      }
+                if (e.key == 'Enter') {
+                  var value = e.target.value;
+                  if (value) {
+                    Router.push({
+                      pathname: '/search',
+                      query: { q: encodeURIComponent(value) }
+                    })
                   }
+                }
               }}
             />
           </Search>
@@ -181,18 +182,18 @@ const NavBar = ({profile}) => {
               <LeaderboardIcon />
             </IconButton>
             {profile ?
-            <IconButton
-              size="small"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              color="inherit"
-              onClick={() => Router.push(`/profile/${profile.identifier}`)}
-            >
-              <Avatar sx={{ bgcolor: '#fff' }} src={profile.avatar_url}/>
-            </IconButton>
-            : 
-            <Button onClick={() => Router.push(basePath + `/api/v1/auth/login`)} variant="contained" startIcon={<GitHubIcon />}>Login</Button> }
+              <IconButton
+                size="small"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                color="inherit"
+                onClick={() => Router.push(`/profile/${profile.identifier}`)}
+              >
+                <Avatar sx={{ bgcolor: '#fff' }} src={profile.avatar_url} />
+              </IconButton>
+              :
+              <Button onClick={() => Router.push(basePath + `/api/v1/auth/login`)} variant="contained" startIcon={<GitHubIcon />}>Login</Button>}
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
