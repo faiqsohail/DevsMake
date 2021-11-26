@@ -11,6 +11,7 @@ import Cookies from "js-cookie";
 import { useState } from "react";
 import rateIdea from "../../src/api/rateIdea";
 import LoginAlert from "../../src/components/LoginAlert";
+import commentIdea from "../../src/api/commentIdea";
 
 export async function getStaticPaths() {
     return {
@@ -55,7 +56,8 @@ const IdeaByUUID = ({ ideaPost, ideaComments, authorProfile }) => {
     const isLoggedIn = sessionCookie != null
 
     const [showLoginAlert, setShowLoginAlert] = useState(false);
-
+    
+    const [comments, setComments] = useState(ideaComments);
     const [likes, setLikes] = useState(ideaPost.likes)
     const [dislikes, setDislikes] = useState(ideaPost.dislikes)
 
@@ -133,8 +135,21 @@ const IdeaByUUID = ({ ideaPost, ideaComments, authorProfile }) => {
                                 if (!isLoggedIn) {
                                     setShowLoginAlert(true)
                                 }
+                            }} onKeyPress={(e) => {
+                                if (e.key === 'Enter') {
+                                    commentIdea(sessionCookie, uuid, e.target.value).then((resp) => {
+                                        if (resp != null) {
+                                            setComments([
+                                                {
+                                                    resp,
+                                                    profile: profile
+                                                }
+                                            ].concat(comments))
+                                        }
+                                    })
+                                }
                             }} />
-                            {ideaComments.length > 0 ? ideaComments.map(comment => (
+                            {comments.length > 0 ? comments.map(comment => (
                                 <Card key={comment.uuid}>
                                     <CardHeader avatar={
                                         <Avatar sx={{ bgcolor: '#fff' }} src={comment.profile.avatar_url} />
