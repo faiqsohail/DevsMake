@@ -4,6 +4,7 @@ import NavBar from '../../src/components/NavBar';
 import Image from 'next/image'
 import { Avatar, Container, Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import useProfile from '../../src/hooks/useProfile';
 
 export async function getStaticPaths() {
     return {
@@ -34,11 +35,13 @@ const ProfileById = ({ profile }) => {
     const router = useRouter()
     const { id } = router.query
 
+    const currentProfile = useProfile();
+
     const post_badges = [1, 10, 50, 100, 500];
 
     return (
         <>
-            <NavBar profile={profile} />
+            <NavBar profile={currentProfile} />
             <section>
                 <Container maxWidth="md" sx={{ mt: 2 }}>
 
