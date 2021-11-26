@@ -7,6 +7,10 @@ import DislikeIcon from '@mui/icons-material/ThumbDownAlt';
 import CodeIcon from '@mui/icons-material/Code';
 import SendIcon from '@mui/icons-material/Send';
 import { Avatar, Badge, Card, CardActionArea, CardActions, CardContent, CardHeader, Container, Grid, TextField, Typography } from "@mui/material";
+import Cookies from "js-cookie";
+import { useState } from "react";
+import rateIdea from "../../src/api/rateIdea";
+import LoginAlert from "../../src/components/LoginAlert";
 
 export async function getStaticPaths() {
     return {
@@ -47,10 +51,18 @@ const IdeaByUUID = ({ ideaPost, ideaComments, authorProfile }) => {
     const profile = useProfile()
 
     const { uuid } = router.query
+    const sessionCookie = Cookies.get('sessionCookie')
+    const isLoggedIn = sessionCookie != null
+
+    const [showLoginAlert, setShowLoginAlert] = useState(false);
+
+    const [likes, setLikes] = useState(ideaPost.likes)
+    const [dislikes, setDislikes] = useState(ideaPost.dislikes)
 
     return (
         <>
             <NavBar profile={profile} />
+            <LoginAlert open={showLoginAlert} setOpen={setShowLoginAlert} />
             <section>
                 <Container maxWidth="lg" sx={{ mt: 2 }}>
 
@@ -80,11 +92,31 @@ const IdeaByUUID = ({ ideaPost, ideaComments, authorProfile }) => {
                                         alignItems="baseline"
                                     >
                                         <Grid item>
-                                            <Badge badgeContent={ideaPost.likes} color="primary">
-                                                <LikeIcon color="action" />
+                                            <Badge badgeContent={likes} color="primary">
+                                                <LikeIcon color="action" onClick={() => {
+                                                    if (!isLoggedIn) {
+                                                        setShowLoginAlert(true)
+                                                    } else {
+                                                        rateIdea(sessionCookie, uuid, "like").then((resp) => {
+                                                            if (resp != null) {
+                                                                setLikes(likes + 1)
+                                                            }
+                                                        })
+                                                    }
+                                                }} />
                                             </Badge>
-                                            <Badge badgeContent={ideaPost.dislikes} color="primary">
-                                                <DislikeIcon color="action" />
+                                            <Badge badgeContent={dislikes} color="primary">
+                                                <DislikeIcon color="action" onClick={() => {
+                                                    if (!isLoggedIn) {
+                                                        setShowLoginAlert(true)
+                                                    } else {
+                                                        rateIdea(sessionCookie, uuid, "dislike").then((resp) => {
+                                                            if (resp != null) {
+                                                                setDislikes(dislikes + 1)
+                                                            }
+                                                        })
+                                                    }
+                                                }} />
                                             </Badge>
                                         </Grid>
                                         <Grid item sx={{ paddingRight: '10px' }}>
@@ -97,13 +129,17 @@ const IdeaByUUID = ({ ideaPost, ideaComments, authorProfile }) => {
                             </Card>
                         </Grid>
                         <Grid item xs={8}>
-                            <TextField fullWidth label="Leave a comment" id="comment" InputProps={{ endAdornment: <SendIcon /> }} />
+                            <TextField fullWidth label="Leave a comment" id="comment" InputProps={{ endAdornment: <SendIcon /> }} disabled={!profile} onClick={() => {
+                                if (!isLoggedIn) {
+                                    setShowLoginAlert(true)
+                                }
+                            }} />
                             {ideaComments.length > 0 ? ideaComments.map(comment => (
                                 <Card key={comment.uuid}>
                                     <CardHeader avatar={
                                         <Avatar sx={{ bgcolor: '#fff' }} src={comment.profile.avatar_url} />
                                     }
-                                        title={`Author: ${comment.profile.username}(${comment.profile.identifier})`}
+                                        title={`${comment.profile.username}(${comment.profile.identifier})`}
                                         onClick={() => Router.push(`/profile/${comment.profile.identifier}`)} />
                                     <CardContent>
                                         {comment.comment}
@@ -116,7 +152,6 @@ const IdeaByUUID = ({ ideaPost, ideaComments, authorProfile }) => {
             </section>
         </>
     );
-
 }
 
 export default IdeaByUUID;
