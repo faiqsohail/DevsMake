@@ -141,7 +141,8 @@ const IdeaByUUID = ({ ideaPost, ideaComments, authorProfile }) => {
                                         if (resp != null) {
                                             setComments([
                                                 {
-                                                    resp,
+                                                    uuid: resp.uuid,
+                                                    comment: resp.comment,
                                                     profile: profile
                                                 }
                                             ].concat(comments))
