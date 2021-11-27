@@ -8,6 +8,7 @@ import NavBar from '../src/components/NavBar';
 import IdeaCard from '../src/components/IdeaCard';
 import fetchIdeas from '../src/api/fetchIdeas';
 import useProfile from '../src/hooks/useProfile';
+import Router from 'next/router';
 
 export async function getStaticProps({ params, req }) {
   const ideas = await fetchIdeas();
@@ -32,7 +33,7 @@ const Home = ({ ideas }) => {
             <Typography variant="h3" component="h2" gutterBottom={true}>DevsMake</Typography>
             <Typography variant="h5" color="textSecondary" paragraph={true}>A social platform bringing together users and developers to create amazing projects.</Typography>
             <Box mt={4}>
-              <Button variant="contained" color="primary" startIcon={<LightbulbIcon />}>submit an idea</Button>
+              <Button variant="contained" color="primary" startIcon={<LightbulbIcon />} onClick={() => Router.push(`/idea/new`)}>submit an idea</Button>
             </Box>
           </Box>
         </Container>
