@@ -19,7 +19,7 @@ type User struct {
 	Created          string `json:"created"`
 }
 
-func (u *User) PublicUser() *models.Profile {
+func (u User) PublicUser() *models.Profile {
 	return &models.Profile{
 		Identifier:       int64(u.ID),
 		Username:         u.Username,

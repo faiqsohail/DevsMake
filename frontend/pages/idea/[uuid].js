@@ -56,8 +56,10 @@ const IdeaByUUID = ({ ideaPost, ideaComments, authorProfile }) => {
     const isLoggedIn = sessionCookie != null
 
     const [showLoginAlert, setShowLoginAlert] = useState(false);
-    
+
+    const [comment, setComment] = useState('');
     const [comments, setComments] = useState(ideaComments);
+
     const [likes, setLikes] = useState(ideaPost.likes)
     const [dislikes, setDislikes] = useState(ideaPost.dislikes)
 
@@ -135,9 +137,11 @@ const IdeaByUUID = ({ ideaPost, ideaComments, authorProfile }) => {
                                 if (!isLoggedIn) {
                                     setShowLoginAlert(true)
                                 }
+                            }} onChange={(e) => {
+                                setComment(e.target.value)
                             }} onKeyPress={(e) => {
                                 if (e.key === 'Enter') {
-                                    commentIdea(sessionCookie, uuid, e.target.value).then((resp) => {
+                                    commentIdea(sessionCookie, uuid, comment).then((resp) => {
                                         if (resp != null) {
                                             setComments([
                                                 {
@@ -146,6 +150,7 @@ const IdeaByUUID = ({ ideaPost, ideaComments, authorProfile }) => {
                                                     profile: profile
                                                 }
                                             ].concat(comments))
+                                            setComment('')
                                         }
                                     })
                                 }

@@ -23,7 +23,7 @@ type Idea struct {
 	Created     string `json:"created"`
 }
 
-func (i *Idea) PublicIdea() *models.Idea {
+func (i Idea) PublicIdea() *models.Idea {
 	t, _ := time.Parse(time.RFC3339, i.Created)
 	return &models.Idea{
 		UUID:        i.UUID,

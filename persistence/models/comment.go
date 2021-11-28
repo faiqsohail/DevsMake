@@ -19,7 +19,7 @@ type Comment struct {
 	Created  string `json:"created"`
 }
 
-func (c *Comment) PublicComment() *models.Comment {
+func (c Comment) PublicComment() *models.Comment {
 	t, _ := time.Parse(time.RFC3339, c.Created)
 	return &models.Comment{
 		UUID:     c.UUID,

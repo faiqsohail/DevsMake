@@ -21,7 +21,7 @@ type IdeaSubmission struct {
 	Created  string `json:"created"`
 }
 
-func (is *IdeaSubmission) PublicIdeaSubmission() *models.Submission {
+func (is IdeaSubmission) PublicIdeaSubmission() *models.Submission {
 	t, _ := time.Parse(time.RFC3339, is.Created)
 	return &models.Submission{
 		UUID:     is.UUID,
