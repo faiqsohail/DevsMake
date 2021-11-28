@@ -114,7 +114,7 @@ const NavBar = ({ profile }) => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem onClick={() => Router.push(`/leaderboard`)}>
         <IconButton size="large" aria-label="leaderboard" color="inherit">
           <LeaderboardIcon />
         </IconButton>
@@ -178,7 +178,7 @@ const NavBar = ({ profile }) => {
             />
           </Search>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="leaderboard" color="inherit">
+            <IconButton size="large" aria-label="leaderboard" color="inherit" onClick={() => Router.push(`/leaderboard`)}>
               <LeaderboardIcon />
             </IconButton>
             {profile ?

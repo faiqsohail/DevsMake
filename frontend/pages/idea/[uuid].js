@@ -154,7 +154,7 @@ const IdeaByUUID = ({ ideaPost, ideaComments, authorProfile }) => {
                                         }
                                     })
                                 }
-                            }} />
+                            }} value={comment} />
                             {comments.length > 0 ? comments.map(comment => (
                                 <Card key={comment.uuid}>
                                     <CardHeader avatar={
