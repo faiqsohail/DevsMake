@@ -65,6 +65,8 @@ func (handler *IdeaCreateSubmissionsHandler) Handle(params idea_submissions.Post
 		)
 	}
 
+	handler.accountRepo.AddPoints(int(*user.ID), 10)
+
 	submission, _ := handler.postRepos.GetIdeaSubmission(uuid)
 	return idea_submissions.NewPostIdeasUUIDSubmissionsOK().WithPayload(submission.PublicIdeaSubmission())
 }

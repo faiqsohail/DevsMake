@@ -65,6 +65,8 @@ func (handler *IdeaCreateCommentsHandler) Handle(params idea_comments.PostIdeasU
 		)
 	}
 
+	handler.accountRepo.AddPoints(int(*user.ID), 1)
+
 	comment, _ := handler.postRepos.GetComment(uuid)
 	return idea_comments.NewPostIdeasUUIDCommentsOK().WithPayload(comment.PublicComment())
 }

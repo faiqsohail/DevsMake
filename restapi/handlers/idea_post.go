@@ -46,6 +46,7 @@ func (handler *IdeaCreateHandler) Handle(params idea_post.PostIdeasParams, princ
 	}
 
 	createdIdea, _ := handler.postRepos.GetIdea(uuid)
+	handler.accountRepo.AddPoints(int(*user.ID), 2)
 
 	return idea_post.NewPostIdeasOK().WithPayload(createdIdea.PublicIdea())
 }

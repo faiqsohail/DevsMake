@@ -126,3 +126,10 @@ func (r *AccountRepo) sumPosts(accountId int, pt postType) (*int, error) {
 
 	return &count, nil
 }
+
+func (r *AccountRepo) AddPoints(accountId int, points int) error {
+	_, err := r.db.
+		Query("UPDATE accounts SET points = points + ? WHERE id = ?", points, accountId)
+
+	return err
+}
