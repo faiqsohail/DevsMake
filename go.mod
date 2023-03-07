@@ -10,7 +10,8 @@ require (
 	github.com/go-openapi/strfmt v0.20.2
 	github.com/go-openapi/swag v0.19.15
 	github.com/jessevdk/go-flags v1.5.0
-	golang.org/x/net v0.0.0-20210927181540-4e4d966f7476
+	github.com/patrickmn/go-cache v2.1.0+incompatible
+	golang.org/x/net v0.7.0
 )
 
 require (
@@ -33,15 +34,14 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	go.mongodb.org/mongo-driver v1.5.1 // indirect
 	golang.org/x/oauth2 v0.0.0-20210819190943-2bc19b11175f
-	golang.org/x/sys v0.0.0-20210423082822-04245dca01da // indirect
-	golang.org/x/text v0.3.6 // indirect
+	golang.org/x/sys v0.5.0 // indirect
+	golang.org/x/text v0.7.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
 require (
 	github.com/golang/protobuf v1.4.2 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
-	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
 	github.com/pquerna/cachecontrol v0.1.0 // indirect
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9 // indirect
 	google.golang.org/appengine v1.6.6 // indirect
